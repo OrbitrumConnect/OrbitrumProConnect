@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -116,7 +116,7 @@ export default function MiniMapa({ origem = null, nomeProf = 'Profissional', ava
         <button onClick={recentrar}
           title="Recentrar câmera"
           style={{ position: 'absolute', bottom: 40, right: 12, zIndex: 999, width: 36, height: 36, borderRadius: '50%',
-            background: '#020914', border: `2px solid ${C.cyan}`, color: C.cyan, fontSize: 16,
+            background: '#000915', border: `2px solid ${C.cyan}`, color: C.cyan, fontSize: 16,
             display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
             boxShadow: `0 0 10px ${C.cyan}44` }}>
           ◎

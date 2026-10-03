@@ -1,21 +1,15 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { ReasonChip } from '@/components/ui/reason-chip';
 
 const C = {
-  bg: '#020914', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };
 
-function Chip({ label }: { label: string }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: C.ink,
-      background: `${C.blue}14`, border: `1px solid ${C.border}`, borderRadius: 11, padding: '2px 8px' }}>
-      <span style={{ color: C.cyan }}>✓</span>{label}
-    </span>
-  );
-}
+const Chip = ReasonChip;
 
 function Avatar({ src, name }: { src?: string | null; name: string }) {
   if (src) return <img src={src} alt={name} style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover', border: `1px solid ${C.border}` }} />;

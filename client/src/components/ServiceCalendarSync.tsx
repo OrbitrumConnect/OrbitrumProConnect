@@ -69,7 +69,6 @@ const ServiceCalendarSync: React.FC<ServiceCalendarSyncProps> = ({
         setServiceEvents(events);
       }
     } catch (error) {
-      console.log('Erro ao carregar eventos sincronizados:', error);
       
       // Dados demonstrativos para mostrar funcionalidade
       setServiceEvents([
@@ -155,7 +154,6 @@ const ServiceCalendarSync: React.FC<ServiceCalendarSyncProps> = ({
         }
       }
     } catch (error) {
-      console.log('Erro ao cancelar serviço:', error);
     } finally {
       setCancelingEvent(null);
     }

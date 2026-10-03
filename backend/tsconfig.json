@@ -23,6 +23,9 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["./shared/*"]
+    },
     "types": ["node"]
   }
 }

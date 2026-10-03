@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -80,7 +80,7 @@ export default function TeamHirings() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#020914' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000915' }}>
         <div className="text-center">
           <div className="animate-spin w-12 h-12 border-4 border-cyan-400 border-t-transparent rounded-full mx-auto mb-4"></div>
           <p className="text-cyan-400">Carregando contratações...</p>
@@ -90,7 +90,7 @@ export default function TeamHirings() {
   }
 
   return (
-    <div className="min-h-screen p-4" style={{ background: '#020914' }}>
+    <div className="min-h-screen p-4" style={{ background: '#000915' }}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { isAdminUser } from '@/lib/isAdmin';
 import { User, Briefcase, Shield, ArrowRight } from "lucide-react";
@@ -7,8 +7,8 @@ import Sidebar from "@/components/Sidebar";
 import NetworkAside from "@/components/NetworkAside";
 
 const C = {
-  bg: '#020914', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };

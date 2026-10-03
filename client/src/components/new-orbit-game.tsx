@@ -149,13 +149,11 @@ export function NewOrbitGame({ onGameEnd }: NewOrbitGameProps) {
     
     // Verificação: abaixo de 400 tokens = perde os 250 de entrada
     if (score < minScore) {
-      console.log(`🎯 Score ${score} < ${minScore}: 0 tokens ganhos (perde 250 de entrada)`);
       return 0;
     }
     
     // Calcula tokens ganhos acima da meta de 400
     const tokensEarned = score - minScore;
-    console.log(`🎯 Score ${score}: ${tokensEarned} tokens ganhos (acima da meta 400)`);
     return tokensEarned;
   }, [isFreeMode, isAdmin]);
 

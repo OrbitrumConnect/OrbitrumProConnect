@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+﻿import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Home, Crown, Search } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -49,7 +49,7 @@ export function SearchLimitModal({ isOpen, onClose, onLogin }: SearchLimitModalP
           >
             <div
               className="rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl pointer-events-auto"
-              style={{ background: '#020914', border: '1px solid rgba(0,174,255,0.25)' }}
+              style={{ background: '#000915', border: '1px solid rgba(0,174,255,0.25)' }}
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-4">

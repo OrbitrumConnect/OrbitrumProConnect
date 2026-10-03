@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Briefcase,
   Info,
+  Network,
 } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
@@ -20,10 +21,13 @@ import InteractiveCalendar from "@/components/InteractiveCalendar";
 import ProfileEditor from "@/components/profile/ProfileEditor";
 import { DocumentUpload } from "@/components/dashboard/DocumentUpload";
 import Sidebar from "@/components/Sidebar";
+import NetworkAside from "@/components/NetworkAside";
+import EquipesTab from "@/components/EquipesTab";
+import { supabase } from "@/lib/supabase";
 
 const C = {
-  bg: '#020914', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };
@@ -32,18 +36,26 @@ interface ClientDashboardProps {
   user: any;
 }
 
-type TabId = 'overview' | 'profile' | 'documents' | 'calendar' | 'map';
+type TabId = 'overview' | 'profile' | 'documents' | 'calendar' | 'equipes' | 'map';
 
 const TABS: Array<{ id: TabId; icon: typeof Home; label: string }> = [
   { id: 'overview', icon: Home, label: 'Visão Geral' },
   { id: 'profile', icon: User, label: 'Perfil' },
   { id: 'documents', icon: FileText, label: 'Documentos' },
   { id: 'calendar', icon: Calendar, label: 'Agenda' },
+  { id: 'equipes', icon: Users, label: 'Meu Time' },
   { id: 'map', icon: MapPin, label: 'GPS' },
 ];
 
 export function CleanClientDashboard({ user }: ClientDashboardProps) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [mobile, setMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 900);
+
+  useEffect(() => {
+    const onR = () => setMobile(window.innerWidth < 900);
+    window.addEventListener('resize', onR);
+    return () => window.removeEventListener('resize', onR);
+  }, []);
 
   const { data: serviceRequests } = useQuery({
     queryKey: ['/api/service-requests/client', user.id],
@@ -55,12 +67,24 @@ export function CleanClientDashboard({ user }: ClientDashboardProps) {
     staleTime: 60 * 1000,
   });
 
+  const { data: factsCount } = useQuery({
+    queryKey: ['client-facts-count', user.id],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('relational_facts')
+        .select('id', { count: 'exact', head: true });
+      return count || 0;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const requestsCount = (serviceRequests as any[])?.length || 0;
   const atividades = Array.isArray(atividade) ? atividade : [];
 
   return (
     <div style={{ minHeight: '100vh', background: 'radial-gradient(circle at 50% -10%, #06223B, #020D18 55%, #00060F)', color: C.ink, fontFamily: 'Inter, system-ui, sans-serif', display: 'flex' }}>
-      <Sidebar />
+      {!mobile && <Sidebar />}
+      <div style={{ flex: 1, minWidth: 0, display: 'flex' }}>
       <div style={{ flex: 1, minWidth: 0 }}>
         {/* Header */}
         <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px 14px clamp(18px, 14vw, 56px)', borderBottom: `1px solid ${C.border}`, background: 'rgba(4,17,31,0.82)' }}>
@@ -76,10 +100,11 @@ export function CleanClientDashboard({ user }: ClientDashboardProps) {
         </header>
 
         {/* Stats rápidos */}
-        <div style={{ maxWidth: 960, margin: '0 auto', padding: 'clamp(12px, 3vw, 24px)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 20 }}>
+        <div style={{ maxWidth: 760, margin: '0 auto', padding: mobile ? '16px 12px 80px' : 'clamp(12px, 3vw, 24px)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 12, marginBottom: 20 }}>
             <StatCard icon={<Users size={16} color={C.cyan} />} label="Conexões" value={atividades.length} border={C.cyan} />
             <StatCard icon={<Clock size={16} color="#70B8FF" />} label="Pedidos ativos" value={requestsCount} border="#70B8FF" />
+            <StatCard icon={<Network size={16} color="#5BF5A0" />} label="Fatos na rede" value={factsCount || 0} border="#5BF5A0" />
           </div>
 
           {/* Tabs */}
@@ -107,6 +132,7 @@ export function CleanClientDashboard({ user }: ClientDashboardProps) {
               </div>
             )}
             {activeTab === 'calendar' && <InteractiveCalendar userType="client" userId={user?.id || 1} />}
+            {activeTab === 'equipes' && <EquipesTab />}
             {activeTab === 'map' && (
               <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 28, textAlign: 'center' }}>
                 <MapPin size={28} color={C.cyan} style={{ margin: '0 auto 12px' }} />
@@ -138,6 +164,8 @@ export function CleanClientDashboard({ user }: ClientDashboardProps) {
             </Link>
           </div>
         </div>
+      </div>
+      {!mobile && <NetworkAside />}
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { Search, UserPlus, X } from 'lucide-react';
 
 const C = {
   bg2: '#061A2D', card: 'rgba(3,18,32,0.92)', surface: '#0A1929',
-  cyan: '#00E5FF', blue: '#00AEEF', green: '#4ADE80', amber: '#F59E0B', red: '#EF4444',
+  cyan: '#00BFFF', blue: '#00AEEF', green: '#4ADE80', amber: '#F59E0B', red: '#EF4444',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.4)',
 };
@@ -283,11 +284,6 @@ export default function EquipesTab() {
             <div style={{ fontWeight: 600, fontSize: 14, color: C.ink, marginBottom: 10 }}>
               Membros ({equipeAtual.membros.length})
             </div>
-            {equipeAtual.membros.length === 0 && (
-              <div style={{ color: C.ink3, fontSize: 13, padding: 12, textAlign: 'center' }}>
-                Nenhum membro ainda. Encontre profissionais no OrbitMatch e adicione ao time.
-              </div>
-            )}
             {equipeAtual.membros.map(m => (
               <div key={m.profId} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', borderBottom: `1px solid ${C.border}` }}>
                 <span style={{ fontSize: 16 }}>{statusIcon(m.status)}</span>
@@ -300,6 +296,15 @@ export default function EquipesTab() {
                 </span>
               </div>
             ))}
+            {equipeAtual.membros.length === 0 && (
+              <div style={{ color: C.ink3, fontSize: 13, padding: 12, textAlign: 'center' }}>
+                Nenhum membro ainda. Use o buscador abaixo para encontrar profissionais na rede.
+              </div>
+            )}
+
+            {equipeAtual.status !== 'desfeita' && equipeAtual.status !== 'concluida' && (
+              <BuscadorProfissionais equipeId={equipeAtual.id} membrosAtuais={equipeAtual.membros.map(m => m.profId)} onConvidou={() => { carregarEquipes(); if (equipeAtual) { fetch(`/api/equipes/${equipeAtual.id}`).then(r => r.json()).then(j => { if (j.success) setEquipeAtual(j.equipe); }).catch(() => {}); } }} />
+            )}
 
             {equipeAtual.status !== 'desfeita' && equipeAtual.status !== 'concluida' && (
               <div style={{ display: 'flex', gap: 8, marginTop: 14, flexWrap: 'wrap' }}>
@@ -355,6 +360,15 @@ export default function EquipesTab() {
         </div>
       )}
 
+      {/* CONVITE POR OPORTUNIDADES (info) */}
+      {view === 'lista' && equipes.length > 0 && (
+        <div style={{ background: `${C.blue}0a`, border: `1px solid ${C.border}`, borderRadius: 14, padding: 14 }}>
+          <div style={{ fontSize: 12, color: C.ink2, lineHeight: 1.6 }}>
+            <strong style={{ color: C.cyan }}>Dica:</strong> Ao criar ou abrir uma equipe, use o buscador para encontrar profissionais da rede e convidar. O convite chega no "Meu Time" de cada profissional.
+          </div>
+        </div>
+      )}
+
       {/* ANALYTICS */}
       {view === 'analytics' && analytics && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -390,6 +404,153 @@ export default function EquipesTab() {
               <div style={{ marginTop: 10, fontSize: 12, color: C.ink3 }}>📍 {analytics.regiao} · 📅 {analytics.periodo.inicio || '—'}{analytics.periodo.fim ? ` — ${analytics.periodo.fim}` : ''}</div>
             )}
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface BuscadorProps {
+  equipeId: string;
+  membrosAtuais: number[];
+  onConvidou: () => void;
+}
+
+function BuscadorProfissionais({ equipeId, membrosAtuais, onConvidou }: BuscadorProps) {
+  const [query, setQuery] = useState('');
+  const [resultados, setResultados] = useState<any[]>([]);
+  const [buscando, setBuscando] = useState(false);
+  const [convidando, setConvidando] = useState<number | null>(null);
+  const [msgConvite, setMsgConvite] = useState('');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const buscar = (q: string) => {
+    setQuery(q);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (q.trim().length < 2) { setResultados([]); return; }
+
+    timerRef.current = setTimeout(async () => {
+      setBuscando(true);
+      try {
+        const r = await fetch(`/api/professionals`);
+        const lista = await r.json();
+        if (Array.isArray(lista)) {
+          const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+          const qn = norm(q);
+          const filtrados = lista.filter((p: any) => {
+            if (membrosAtuais.includes(p.id)) return false;
+            const name = norm(p.name || '');
+            const title = norm(p.title || '');
+            const skills = norm((p.services || []).join(' '));
+            return name.includes(qn) || title.includes(qn) || skills.includes(qn);
+          }).slice(0, 8);
+          setResultados(filtrados);
+        }
+      } catch {}
+      setBuscando(false);
+    }, 300);
+  };
+
+  const convidar = async (prof: any) => {
+    setConvidando(prof.id);
+    try {
+      const r = await fetch(`/api/equipes/${equipeId}/convidar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profId: prof.id,
+          nome: prof.name,
+          titulo: prof.title || '',
+          especialidade: (prof.services || [])[0] || '',
+        }),
+      });
+      const j = await r.json();
+      if (j.success) {
+        setMsgConvite(`Convite enviado para ${prof.name}!`);
+        setResultados(prev => prev.filter(p => p.id !== prof.id));
+        onConvidou();
+        setTimeout(() => setMsgConvite(''), 3000);
+      }
+    } catch {}
+    setConvidando(null);
+  };
+
+  return (
+    <div style={{ marginTop: 16, borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
+      <div style={{ fontWeight: 600, fontSize: 13, color: C.ink, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+        <UserPlus size={15} color={C.cyan} /> Adicionar profissional
+      </div>
+
+      <div style={{ position: 'relative', marginBottom: 8 }}>
+        <Search size={14} color={C.ink3} style={{ position: 'absolute', left: 10, top: 10, pointerEvents: 'none' }} />
+        <input
+          value={query}
+          onChange={e => buscar(e.target.value)}
+          placeholder="Buscar por nome, profissão ou especialidade..."
+          style={{
+            width: '100%', padding: '8px 12px 8px 32px',
+            background: C.surface, border: `1px solid ${C.border}`,
+            borderRadius: 10, color: C.ink, fontSize: 13, outline: 'none',
+            boxSizing: 'border-box',
+          }}
+        />
+        {query && (
+          <button onClick={() => { setQuery(''); setResultados([]); }}
+            style={{ position: 'absolute', right: 8, top: 7, background: 'none', border: 'none', color: C.ink3, cursor: 'pointer', padding: 2 }}>
+            <X size={14} />
+          </button>
+        )}
+      </div>
+
+      {msgConvite && (
+        <div style={{ fontSize: 12, color: C.green, marginBottom: 8 }}>{msgConvite}</div>
+      )}
+
+      {buscando && <div style={{ fontSize: 12, color: C.ink3, padding: 8 }}>Buscando...</div>}
+
+      {resultados.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxHeight: 280, overflowY: 'auto' }}>
+          {resultados.map(p => (
+            <div key={p.id} style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '8px 12px', background: C.surface,
+              border: `1px solid ${C.border}`, borderRadius: 10,
+            }}>
+              {p.avatar ? (
+                <img src={p.avatar} alt={p.name} style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', border: `1px solid ${C.border}` }} />
+              ) : (
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: `${C.blue}33`, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.cyan, fontWeight: 700, fontSize: 14 }}>
+                  {p.name?.[0]?.toUpperCase() || '?'}
+                </div>
+              )}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontWeight: 600, fontSize: 13, color: C.ink, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</div>
+                <div style={{ fontSize: 11, color: C.ink3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {p.title}{p.hourlyRate ? ` · R$ ${p.hourlyRate}/h` : ''}
+                </div>
+              </div>
+              <button
+                onClick={() => convidar(p)}
+                disabled={convidando === p.id}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 4,
+                  padding: '5px 12px', borderRadius: 8, border: 'none',
+                  background: convidando === p.id ? C.ink3 : `linear-gradient(135deg, ${C.cyan}, ${C.blue})`,
+                  color: '#012', fontWeight: 600, fontSize: 12,
+                  cursor: convidando === p.id ? 'wait' : 'pointer',
+                  flexShrink: 0,
+                }}
+              >
+                <UserPlus size={12} /> {convidando === p.id ? '...' : 'Convidar'}
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {query.trim().length >= 2 && !buscando && resultados.length === 0 && (
+        <div style={{ fontSize: 12, color: C.ink3, padding: 8, textAlign: 'center' }}>
+          Nenhum profissional encontrado para "{query}"
         </div>
       )}
     </div>

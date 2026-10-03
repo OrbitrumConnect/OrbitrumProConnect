@@ -54,13 +54,10 @@ export function ProfessionalOrb({ professional, onDoubleClick, onRemove }: Profe
       drag={false}
       dragConstraints={{ left: -400, right: 400, top: -300, bottom: 300 }}
       onDragStart={() => {
-        console.log('🔥 DRAG START for:', professional.name);
         setIsDragging(true);
       }}
       onDragEnd={() => {
-        console.log('🔥 DRAG END for:', professional.name);
         setTimeout(() => {
-          console.log('🔥 RESETTING isDragging to false for:', professional.name);
           setIsDragging(false);
         }, 50);
       }}
@@ -71,8 +68,6 @@ export function ProfessionalOrb({ professional, onDoubleClick, onRemove }: Profe
         className="professional-orb orb-professional w-9 h-9 md:w-10 md:h-10 rounded-full overflow-hidden cursor-pointer relative"
         onClick={(e) => {
           e.stopPropagation();
-          console.log('🔥 ORB CLICKED:', professional.name);
-          console.log('🔥 CALLING onDoubleClick for:', professional.name);
           onDoubleClick();
         }}
       >
@@ -99,7 +94,6 @@ export function ProfessionalOrb({ professional, onDoubleClick, onRemove }: Profe
             }}
             onClick={(e) => {
               e.stopPropagation();
-              console.log('Removing professional:', professional.id);
               onRemove?.(professional.id);
             }}
           >

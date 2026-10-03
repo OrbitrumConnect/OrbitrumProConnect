@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+﻿import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -57,7 +57,7 @@ export function SearchBar({ isExpanded, onSearch, onClose, onConfirm }: SearchBa
                 </button>
               )}
               {!query && (
-                <Search className="w-4 h-4 text-[#00E5FF]" />
+                <Search className="w-4 h-4 text-[#00BFFF]" />
               )}
               {query && (
                 <button

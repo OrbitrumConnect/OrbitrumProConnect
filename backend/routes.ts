@@ -3121,8 +3121,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: prof.id, name: prof.name, title: prof.title,
           city: prof.city, state: prof.state, avatar: prof.avatar,
           services: prof.services ?? [], available: prof.available,
-          userId: profUserId, // user id (para registrar a experiência/fato)
-          // Camada de Continuidade: deep-links reais (só o que existe no banco, nada fabricado)
+          hourlyRate: prof.hourlyRate ?? null,
+          userId: profUserId,
           phone: prof.phone ?? null, address: prof.address ?? null,
           latitude: prof.latitude ?? null, longitude: prof.longitude ?? null,
           linkedinUrl: prof.linkedinUrl ?? null,
@@ -3327,6 +3327,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     createdAt: string;
     status: 'aberta' | 'atendida' | 'expirada';
     recomendacoes: Array<{ profId: number; profName: string; byUserId: number; byUserName: string; timestamp: string }>;
+    interessados: Array<{ profId: number; profName: string; profAvatar?: string; profTitle?: string; timestamp: string }>;
   }
   const opportunityStore: Opportunity[] = [];
 
@@ -3341,6 +3342,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       createdAt: new Date().toISOString(),
       status: 'aberta',
       recomendacoes: [],
+      interessados: [],
     };
     opportunityStore.unshift(opp);
     res.json({ success: true, opportunity: opp });
@@ -3349,6 +3351,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/opportunities", async (_req, res) => {
     const abertas = opportunityStore.filter(o => o.status === 'aberta');
     res.json(abertas.slice(0, 30));
+  });
+
+  app.post("/api/opportunities/:id/interest", async (req, res) => {
+    const opp = opportunityStore.find(o => o.id === req.params.id);
+    if (!opp) return res.status(404).json({ error: "Oportunidade não encontrada" });
+    const { profId, profName, profAvatar, profTitle } = req.body;
+    if (!profId) return res.status(400).json({ error: "profId obrigatório" });
+    if (opp.interessados.some(i => i.profId === profId)) {
+      return res.status(409).json({ error: "Você já demonstrou interesse nesta oportunidade" });
+    }
+    opp.interessados.push({
+      profId, profName: profName || 'Profissional',
+      profAvatar, profTitle,
+      timestamp: new Date().toISOString(),
+    });
+    res.json({ success: true, interessados: opp.interessados });
   });
 
   app.post("/api/opportunities/:id/recommend", async (req, res) => {

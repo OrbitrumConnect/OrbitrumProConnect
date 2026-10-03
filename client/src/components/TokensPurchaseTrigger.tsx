@@ -24,8 +24,6 @@ export function TokensPurchaseTrigger() {
     }
 
     try {
-      console.log(`🛒 Comprando ${amount} tokens por ${price}`);
-      
       const numericPrice = parseFloat(price.replace('R$ ', '').replace(',', '.'));
       
       const response = await fetch('/api/payment/create-pix-tokens', {
@@ -44,8 +42,6 @@ export function TokensPurchaseTrigger() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        console.log('✅ PIX gerado:', data.transactionId);
-        
         // Criar nova janela com QR Code PIX
         const pixWindow = window.open('', '_blank', 'width=400,height=600');
         if (pixWindow) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -137,7 +137,7 @@ export function TeamHiringModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" style={{ background: '#020914', border: '1px solid rgba(0,174,255,0.25)' }}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto" style={{ background: '#000915', border: '1px solid rgba(0,174,255,0.25)' }}>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-2">
             <Users className="w-6 h-6 text-cyan-400" />

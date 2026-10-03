@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,6 +29,7 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
     password: "",
     username: "",
     rememberMe: false,
+    acceptTerms: false,
     userType: "" as "" | "client" | "professional",
     profession: "",
   });
@@ -92,17 +93,24 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
   };
 
   const handleGoogleLogin = async (userType: 'client' | 'professional' = 'client') => {
+    if (!isLogin && !formData.acceptTerms) {
+      showNotification('warning', 'Termos obrigatórios', 'Você deve aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.');
+      return;
+    }
     try {
       setLoading(true);
+      const redirectPath = userType === 'professional' ? '/cadastro-profissional' : '/';
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           queryParams: { access_type: 'offline', prompt: 'consent' },
-          redirectTo: window.location.origin,
+          redirectTo: `${window.location.origin}${redirectPath}`,
+          data: {
+            user_type: userType,
+          },
         }
       });
       if (error) throw error;
-      // O redirecionamento será feito pelo Supabase
     } catch (error: any) {
       console.error('Erro no login Google:', error);
       showNotification('error', 'Erro no login Google', error?.message || 'Erro ao conectar com Google');
@@ -116,6 +124,54 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
     setLoading(true);
     setEmailConfirmationError(false);
     try {
+      if (!isLogin) {
+        if (!formData.acceptTerms) {
+          showNotification('warning', 'Termos obrigatórios', 'Você deve aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.');
+          setLoading(false);
+          return;
+        }
+        // CADASTRO — cria a conta no Supabase Auth
+        const { data, error } = await supabase.auth.signUp({
+          email: formData.email,
+          password: formData.password,
+          options: {
+            data: {
+              full_name: formData.username,
+              user_type: formData.userType || 'client',
+              profession: formData.profession || undefined,
+            },
+          },
+        });
+        if (error) throw error;
+        if (data.user && !data.user.confirmed_at && !data.session) {
+          showNotification('success', 'Conta criada!', 'Enviamos um link de confirmação para o seu email. Confirme para poder entrar.', true);
+          return;
+        }
+        if (data.user && data.session) {
+          let perfil: any = {};
+          try {
+            const { data: row } = await supabase.rpc('get_my_profile');
+            if (row) perfil = row;
+          } catch (_) {}
+          const user = {
+            ...data.user,
+            ...perfil,
+            id: data.user.id,
+            id_interno: perfil.id,
+            email: data.user.email,
+            isAdmin: (perfil.admin_level ?? 0) >= 1 || perfil.user_type === 'admin',
+          };
+          onSuccess?.(user, formData.rememberMe);
+          if (formData.userType === 'professional') {
+            setLocation('/cadastro-profissional');
+          } else {
+            setLocation('/');
+          }
+        }
+        return;
+      }
+
+      // LOGIN — email + senha
       const { data, error } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password,
@@ -124,27 +180,20 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
 
       const authUser = data.user;
       if (authUser) {
-        // Enriquece com o registro de public.users via RPC get_my_profile()
-        // (SECURITY DEFINER, pela sessão recém-criada do login).
         let perfil: any = {};
         try {
           const { data: row } = await supabase.rpc('get_my_profile');
           if (row) perfil = row;
-        } catch (e) {
-          console.warn('Perfil de public.users não carregado:', e);
-        }
+        } catch (_) {}
         const user = {
           ...authUser,
           ...perfil,
-          id: authUser.id, // mantém o UUID do Supabase
-          id_interno: perfil.id, // id numérico de public.users
+          id: authUser.id,
+          id_interno: perfil.id,
           email: authUser.email,
           isAdmin: (perfil.admin_level ?? 0) >= 1 || perfil.user_type === 'admin',
         };
         onSuccess?.(user, formData.rememberMe);
-        // Vai pra HOME logado (admin acessa o painel pela sidebar). Antes ia direto pra /admin
-        // em 100ms, mas o isAuthenticated ainda não tinha propagado → AdminDashboard rebatia pra
-        // '/' ("não autenticado") e parecia que o login falhava. Home é determinística.
         setLocation('/');
       } else {
         showNotification('error', 'Erro no login', 'Usuário não encontrado');
@@ -155,8 +204,10 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
       if (msg.toLowerCase().includes('email not confirmed')) {
         setEmailConfirmationError(true);
         showNotification('warning', 'Email não confirmado', 'Confirme seu email para continuar', true, true);
+      } else if (msg.toLowerCase().includes('user already registered')) {
+        showNotification('info', 'Conta já existe', 'Este email já tem conta. Use "Entrar" para fazer login.');
       } else {
-        showNotification('error', 'Erro no login', msg);
+        showNotification('error', isLogin ? 'Erro no login' : 'Erro no cadastro', msg);
       }
     } finally {
       setLoading(false);
@@ -191,7 +242,7 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
 
   const toggleMode = () => {
     setIsLogin(!isLogin);
-    setFormData({ email: "", password: "", username: "", rememberMe: false, userType: "", profession: "" });
+    setFormData({ email: "", password: "", username: "", rememberMe: false, acceptTerms: false, userType: "", profession: "" });
     setEmailConfirmationError(false);
     setShowAlternativeEmail(false);
     setAlternativeEmail("");
@@ -200,18 +251,18 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm sm:max-w-md mx-auto text-white overflow-y-auto max-h-[90vh] sm:max-h-none" style={{ background: '#020914', border: '1px solid rgba(0,174,255,0.25)' }}>
+      <DialogContent className="max-w-sm sm:max-w-md mx-auto text-white overflow-y-auto max-h-[90vh] sm:max-h-none" style={{ background: '#000915', border: '1px solid rgba(0,174,255,0.25)' }}>
         <DialogHeader className="text-center">
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5 }}
             className="mx-auto mb-3 sm:mb-4 w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #00E5FF, #00AEEF)' }}
+            style={{ background: 'linear-gradient(135deg, #00BFFF, #00AEEF)' }}
           >
             <Rocket className="h-6 w-6 sm:h-8 sm:w-8 text-black" />
           </motion.div>
-          <DialogTitle className="text-xl sm:text-2xl font-bold" style={{ color: '#00E5FF' }}>
+          <DialogTitle className="text-xl sm:text-2xl font-bold" style={{ color: '#00BFFF' }}>
             {isLogin ? "Bem-vindo de volta" : "Cadastre-se grátis"}
           </DialogTitle>
           <DialogDescription className="text-sm sm:text-base" style={{ color: '#91A9BD' }}>
@@ -229,7 +280,7 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
                     <button key={type} type="button" onClick={() => setFormData(prev => ({ ...prev, userType: type }))}
                       style={{
                         flex: 1, padding: '10px 0', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer',
-                        background: formData.userType === type ? 'linear-gradient(135deg, #00E5FF, #00AEEF)' : 'transparent',
+                        background: formData.userType === type ? 'linear-gradient(135deg, #00BFFF, #00AEEF)' : 'transparent',
                         color: formData.userType === type ? '#012' : '#91A9BD',
                         border: formData.userType === type ? 'none' : '1px solid rgba(0,174,255,0.25)',
                       }}>{label}</button>
@@ -274,8 +325,22 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
             </div>
           </div>
 
+          {!isLogin && (
+            <div className="flex items-start gap-3" style={{ padding: '8px 0' }}>
+              <input id="acceptTerms" type="checkbox" checked={formData.acceptTerms} onChange={(e) => setFormData(prev => ({ ...prev, acceptTerms: e.target.checked }))}
+                className="w-4 h-4 mt-0.5 text-cyan-400 border-gray-700 rounded focus:ring-cyan-400 focus:ring-2 flex-shrink-0" />
+              <label htmlFor="acceptTerms" className="text-xs cursor-pointer" style={{ color: '#91A9BD', lineHeight: 1.5 }}>
+                Li e aceito os{' '}
+                <a href="/termos" target="_blank" rel="noopener noreferrer" style={{ color: '#00BFFF', textDecoration: 'underline' }}>Termos de Uso</a>
+                {' '}e a{' '}
+                <a href="/privacidade" target="_blank" rel="noopener noreferrer" style={{ color: '#00BFFF', textDecoration: 'underline' }}>Política de Privacidade</a>
+                {' '}do Orbitrum.
+              </label>
+            </div>
+          )}
+
           <div className="space-y-2 sm:space-y-3">
-            <Button type="submit" disabled={loading} className="w-full font-semibold py-2 sm:py-3 text-sm" style={{ background: 'linear-gradient(135deg, #00E5FF, #00AEEF)', color: '#012', border: 'none' }}>
+            <Button type="submit" disabled={loading || (!isLogin && !formData.acceptTerms)} className="w-full font-semibold py-2 sm:py-3 text-sm" style={{ background: (!isLogin && !formData.acceptTerms) ? '#1a3a5c' : 'linear-gradient(135deg, #00BFFF, #00AEEF)', color: (!isLogin && !formData.acceptTerms) ? '#607A91' : '#012', border: 'none' }}>
               {loading ? (
                 <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-5 h-5 border-2 border-black border-t-transparent rounded-full" />
               ) : (
@@ -289,9 +354,9 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
             <button type="button" onClick={toggleMode}
               style={{ width: '100%', background: isLogin ? 'rgba(0,229,255,0.08)' : 'none', border: `1px solid ${isLogin ? 'rgba(0,229,255,0.25)' : 'rgba(0,174,255,0.15)'}`, borderRadius: 12, padding: '12px 16px', color: '#91A9BD', fontSize: 14, cursor: 'pointer', transition: 'all 0.2s' }}>
               {isLogin ? (
-                <>Não tem conta? <span style={{ color: '#00E5FF', fontWeight: 700, fontSize: 15 }}>Cadastre-se grátis</span></>
+                <>Não tem conta? <span style={{ color: '#00BFFF', fontWeight: 700, fontSize: 15 }}>Cadastre-se grátis</span></>
               ) : (
-                <>Já tem conta? <span style={{ color: '#00E5FF', fontWeight: 600 }}>Entrar</span></>
+                <>Já tem conta? <span style={{ color: '#00BFFF', fontWeight: 600 }}>Entrar</span></>
               )}
             </button>
 
@@ -320,7 +385,7 @@ export function LoginModal({ isOpen, onClose, onSuccess, defaultMode = 'login' }
         </form>
 
         <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(0,174,255,0.15)' }}>
-          <p className="text-xs text-center" style={{ color: '#607A91' }}>Ao continuar, você concorda com nossos <span style={{ color: '#00E5FF', cursor: 'pointer' }}>Termos de Uso</span> e <span style={{ color: '#00E5FF', cursor: 'pointer' }}>Política de Privacidade</span></p>
+          <p className="text-xs text-center" style={{ color: '#607A91' }}>Ao continuar, você concorda com nossos <a href="/termos" target="_blank" rel="noopener noreferrer" style={{ color: '#00BFFF', textDecoration: 'underline' }}>Termos de Uso</a> e <a href="/privacidade" target="_blank" rel="noopener noreferrer" style={{ color: '#00BFFF', textDecoration: 'underline' }}>Política de Privacidade</a></p>
         </div>
       </DialogContent>
 

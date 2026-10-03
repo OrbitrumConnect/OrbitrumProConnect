@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -151,7 +151,7 @@ export default function DocumentVerification() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#020914' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000915' }}>
         <Card className="glassmorphism max-w-md border-cyan-500/30">
           <CardHeader>
             <CardTitle className="text-white text-center">
@@ -171,7 +171,7 @@ export default function DocumentVerification() {
   }
 
   return (
-    <div className="min-h-screen px-4 py-8" style={{ background: '#020914' }}>
+    <div className="min-h-screen px-4 py-8" style={{ background: '#000915' }}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">

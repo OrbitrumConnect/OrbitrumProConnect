@@ -374,8 +374,13 @@ export default function ConversaModal({ profId, onClose }: Props) {
             : <div style={{ width: 38, height: 38, borderRadius: '50%', background: `${C.blue}33`, border: `1px solid ${C.border}` }} />}
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 600, fontSize: 15 }}>{prof?.name ?? 'Profissional'}</div>
-            <div style={{ fontSize: 11, color: estado === 'validado' ? '#4ADE80' : estado === 'em_servico' ? '#FF9800' : C.cyan }}>
-              {estado === 'validado' ? '✓ Concluído' : estado === 'em_servico' ? 'Em serviço' : estado === 'a_caminho' ? 'A caminho' : estado === 'chegou' ? 'No local' : 'Online'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 11, color: estado === 'validado' ? '#4ADE80' : estado === 'em_servico' ? '#FF9800' : C.cyan }}>
+                {estado === 'validado' ? '✓ Concluído' : estado === 'em_servico' ? 'Em serviço' : estado === 'a_caminho' ? 'A caminho' : estado === 'chegou' ? 'No local' : 'Online'}
+              </span>
+              {prof?.hourlyRate && (
+                <span style={{ fontSize: 11, color: '#5BF5A0', fontWeight: 600 }}>· R$ {prof.hourlyRate}/h</span>
+              )}
             </div>
           </div>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: C.ink2, fontSize: 22, cursor: 'pointer' }}>×</button>

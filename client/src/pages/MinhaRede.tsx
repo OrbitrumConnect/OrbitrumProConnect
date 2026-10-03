@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/hooks/useAuth';
 import Sidebar from '@/components/Sidebar';
@@ -7,8 +7,8 @@ import OpportunityFeed from '@/components/OpportunityFeed';
 import OpportunityPost from '@/components/OpportunityPost';
 
 const C = {
-  bg: '#020914', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };
@@ -20,7 +20,7 @@ interface Conexao {
 }
 
 const ESTADO_COR: Record<string, string> = {
-  conversando: '#00AEEF', combinado: '#F59E0B', concluido: '#10B981', validado: '#00E5FF',
+  conversando: '#00AEEF', combinado: '#F59E0B', concluido: '#10B981', validado: '#00BFFF',
 };
 
 type Tab = 'visao' | 'pessoas' | 'conversas' | 'indicacoes' | 'experiencias' | 'oportunidades';

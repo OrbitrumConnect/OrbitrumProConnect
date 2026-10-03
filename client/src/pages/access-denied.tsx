@@ -1,4 +1,4 @@
-
+﻿
 import { Button } from "@/components/ui/button";
 import { Shield, Lock } from "lucide-react";
 import { motion } from "framer-motion";
@@ -9,7 +9,7 @@ export default function AccessDenied() {
   };
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden" style={{ background: '#020914', position: 'relative', zIndex: 1 }}>
+    <div className="min-h-screen w-full relative overflow-hidden" style={{ background: '#000915', position: 'relative', zIndex: 1 }}>
       
       <main className="min-h-screen flex items-center justify-center relative">
         <div className="text-center space-y-8 max-w-2xl mx-auto px-4">

@@ -1,9 +1,9 @@
-export const C = {
-  bg: '#020914',
+﻿export const C = {
+  bg: '#000915',
   bg2: '#061A2D',
   card: 'rgba(3,18,32,0.9)',
   surface: '#0A1929',
-  cyan: '#00E5FF',
+  cyan: '#00BFFF',
   blue: '#00AEEF',
   green: '#4ADE80',
   amber: '#F59E0B',

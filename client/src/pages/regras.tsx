@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Regras() {
   return (
-    <div className="min-h-screen text-white" style={{ background: '#020914' }}>
+    <div className="min-h-screen text-white" style={{ background: '#000915' }}>
       <div className="max-w-4xl mx-auto p-6 py-20">
         {/* Navigation */}
         <div className="flex items-center justify-between mb-8">

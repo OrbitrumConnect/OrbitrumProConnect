@@ -3,7 +3,7 @@ import { isAdminUser } from '@/lib/isAdmin';
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import type { User } from "@shared/schema";
-import { Gamepad2, Menu, Users, Home, LogOut, X, Wallet, Shield, User as UserIcon, Coins, UserPlus, FileText, Book, Rocket, HelpCircle } from "lucide-react";
+import { Menu, Users, Home, LogOut, X, Wallet, Shield, User as UserIcon, UserPlus, FileText, Book, Rocket, HelpCircle } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence } from "framer-motion";
@@ -63,10 +63,10 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 p-2 sm:p-4 transition-all duration-300" style={{ transform: 'scale(1.06)' }}>
+      <header className="fixed top-0 left-0 right-0 z-40 p-2 sm:p-4 transition-all duration-300">
         <nav className="flex justify-between items-center glassmorphism rounded-full px-3 sm:px-6 py-2 sm:py-3 max-w-6xl mx-auto backdrop-blur-sm">
           <div className="flex items-center space-x-1.5 sm:space-x-2">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full" style={{ background: 'linear-gradient(to right, #00E5FF, #00AEEF)' }} />
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full" style={{ background: 'linear-gradient(to right, #00BFFF, #00AEEF)' }} />
             <span className="font-bold text-sm sm:text-xl text-cyan-400">Orbitrum</span>
             <span className="text-[9.5px] sm:text-[10.2px] bg-blue-500 bg-opacity-30 border border-blue-400 px-1 sm:px-1.5 py-0.5 sm:py-0.5 rounded text-blue-200 font-semibold">
               BETA
@@ -75,54 +75,37 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
           
           {/* Desktop Navigation */}
           <div className="hidden sm:flex items-center space-x-3 md:space-x-6">
-            <Link href="/" className={`text-white hover:text-[#00E5FF] transition-colors flex items-center space-x-1 text-sm ${location === '/' ? 'text-[#00E5FF]' : ''}`}>
+            <Link href="/" className={`text-white hover:text-[#00BFFF] transition-colors flex items-center space-x-1 text-sm ${location === '/' ? 'text-[#00BFFF]' : ''}`}>
               <Home className="h-4 w-4" />
               <span>Orbit</span>
             </Link>
-            <Link href="/teams" className={`text-white hover:text-[#00E5FF] transition-colors flex items-center space-x-1 text-sm ${location === '/teams' ? 'text-[#00E5FF]' : ''}`}>
+            <Link href="/teams" className={`text-white hover:text-[#00BFFF] transition-colors flex items-center space-x-1 text-sm ${location === '/teams' ? 'text-[#00BFFF]' : ''}`}>
               <Users className="h-4 w-4" />
               <span>Teams</span>
             </Link>
             {isAuthenticated && (
               <Link 
-                href={`/dashboard-${authUser?.userType === 'professional' ? 'professional' : 'client'}?tab=tokens`}
-                className="text-white hover:text-[#00E5FF] transition-colors flex items-center space-x-1 text-sm"
-              >
-                <Coins className="h-4 w-4" />
-                <span>+Tokens</span>
-              </Link>
-            )}
-            {isAuthenticated && (
-              <Link 
                 href="/dashboard-selector" 
                 onClick={() => {}}
-                className={`text-white hover:text-[#00E5FF] transition-colors flex items-center space-x-1 text-sm ${location.startsWith('/dashboard') ? 'text-[#00E5FF]' : ''}`}
+                className={`text-white hover:text-[#00BFFF] transition-colors flex items-center space-x-1 text-sm ${location.startsWith('/dashboard') ? 'text-[#00BFFF]' : ''}`}
               >
                 <UserIcon className="h-4 w-4" />
                 <span>Dashboard</span>
               </Link>
             )}
-            <Link href="/admin" className={`text-white hover:text-[#00E5FF] transition-colors flex items-center space-x-1 text-sm ${location === '/admin' ? 'text-[#00E5FF]' : ''}`}>
+            <Link href="/admin" className={`text-white hover:text-[#00BFFF] transition-colors flex items-center space-x-1 text-sm ${location === '/admin' ? 'text-[#00BFFF]' : ''}`}>
               <Shield className="h-4 w-4" />
               <span>Admin</span>
             </Link>
             
             <button 
               onClick={() => setHowItWorksOpen(true)}
-              className="text-white hover:text-[#00E5FF] transition-colors flex items-center space-x-1 text-sm"
+              className="text-white hover:text-[#00BFFF] transition-colors flex items-center space-x-1 text-sm"
             >
               <HelpCircle className="h-4 w-4" />
               <span>Como Funciona</span>
             </button>
-            
-            <Link href="/jogo">
-              <Button className="neon-button rounded-full font-semibold px-1.5 py-1 text-xs scale-[0.6]">
-                <Gamepad2 className="mr-0.5 h-2.5 w-2.5" />
-                JOGAR
-              </Button>
-            </Link>
-            
-            {/* Botão Telegram - Desktop */}
+
             <Button
               onClick={() => window.open('https://t.me/orbitrumconnect_bot', '_blank')}
               className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white border-0 shadow-lg transition-all duration-300 hover:shadow-blue-500/25 scale-[0.8]"
@@ -139,14 +122,6 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
           
           {/* Mobile/Desktop Right Section */}
           <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-4">
-            {/* Botão Jogar sempre visível em mobile */}
-            <div className="sm:hidden">
-              <Link href="/jogo">
-                <Button className="neon-button px-1 py-1 text-[9px] rounded-full scale-[0.6] font-medium">
-                  <Gamepad2 className="h-2.5 w-2.5" />
-                </Button>
-              </Link>
-            </div>
             
             {isAuthenticated ? (
               <>
@@ -176,7 +151,7 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
                   onClick={() => setWalletModalOpen(true)}
                   className="glassmorphism px-1.5 py-1 sm:px-2 md:px-3 rounded-full text-[11px] sm:text-xs hover:bg-white/10 transition-colors border border-cyan-500/30 shadow-lg"
                 >
-                  <Wallet className="h-3 w-3 sm:h-4 sm:w-4 inline mr-0.5 text-[#00E5FF]" />
+                  <Wallet className="h-3 w-3 sm:h-4 sm:w-4 inline mr-0.5 text-[#00BFFF]" />
                   <span className="hidden xs:inline text-[11px] sm:text-xs font-medium">
                     {isAdminUser(authUser) 
                       ? '10.000' // Admin com carteira administrativa
@@ -246,14 +221,14 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "-100%", opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 400 }}
-              className="fixed top-16 right-2 left-2 max-w-xs mx-auto glassmorphism rounded-xl border border-[#00E5FF]/30 overflow-hidden scale-[0.85]"
+              className="fixed top-16 right-2 left-2 max-w-xs mx-auto glassmorphism rounded-xl border border-[#00BFFF]/30 overflow-hidden scale-[0.85]"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-2 space-y-1">
                 {/* Home */}
                 <Link 
                   href="/" 
-                  className={`text-white flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00E5FF]/10 transition-all duration-300 ${location === '/' ? 'bg-[#00E5FF]/20 text-[#00E5FF]' : 'hover:text-[#00E5FF]'}`}
+                  className={`text-white flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00BFFF]/10 transition-all duration-300 ${location === '/' ? 'bg-[#00BFFF]/20 text-[#00BFFF]' : 'hover:text-[#00BFFF]'}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <Home className="h-4 w-4" />
@@ -263,7 +238,7 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
                 {/* Teams */}
                 <Link 
                   href="/teams" 
-                  className={`text-white flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00E5FF]/10 transition-all duration-300 ${location === '/teams' ? 'bg-[#00E5FF]/20 text-[#00E5FF]' : 'hover:text-[#00E5FF]'}`}
+                  className={`text-white flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00BFFF]/10 transition-all duration-300 ${location === '/teams' ? 'bg-[#00BFFF]/20 text-[#00BFFF]' : 'hover:text-[#00BFFF]'}`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <Users className="h-4 w-4" />
@@ -274,7 +249,7 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
                 {isAuthenticated && (
                   <Link 
                     href={`/dashboard-${authUser?.userType === 'professional' ? 'professional' : 'client'}`}
-                    className={`text-white flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00E5FF]/10 transition-all duration-300 ${location.includes('/dashboard') ? 'bg-[#00E5FF]/20 text-[#00E5FF]' : 'hover:text-[#00E5FF]'}`}
+                    className={`text-white flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00BFFF]/10 transition-all duration-300 ${location.includes('/dashboard') ? 'bg-[#00BFFF]/20 text-[#00BFFF]' : 'hover:text-[#00BFFF]'}`}
                     onClick={() => {
                       setMobileMenuOpen(false);
                     }}
@@ -298,17 +273,6 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
                   </button>
                 )}
 
-                {/* +Tokens - apenas para usuários autenticados */}
-                {isAuthenticated && (
-                  <Link 
-                    href={`/dashboard-${authUser?.userType === 'professional' ? 'professional' : 'client'}?tab=tokens`}
-                    className="flex items-center space-x-1.5 p-1.5 rounded-lg hover:bg-purple-500/10 hover:text-purple-400 transition-all duration-300 border border-purple-500/30 scale-85"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Coins className="h-3.5 w-3.5" />
-                    <span className="font-medium text-xs">+Tokens</span>
-                  </Link>
-                )}
 
                 {/* Cadastro Profissional */}
                 <Link 
@@ -358,17 +322,6 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
                   <span className="font-medium text-xs">Planos</span>
                 </button>
 
-                {/* Game */}
-                <button 
-                  onClick={() => {
-                    onOpenGame?.();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-1.5 p-1.5 rounded-lg hover:bg-yellow-500/10 hover:text-yellow-400 transition-all duration-300 w-full text-left border border-yellow-500/30 scale-85"
-                >
-                  <Gamepad2 className="h-3.5 w-3.5" />
-                  <span className="font-medium text-xs">Jogo</span>
-                </button>
 
                 {/* Separator */}
                 <div className="border-t border-gray-600/30 my-2" />
@@ -450,7 +403,7 @@ export function Header({ onOpenGame, onOpenPlans }: HeaderProps) {
                       setLoginModalOpen(true);
                       setMobileMenuOpen(false);
                     }}
-                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00E5FF]/10 text-[#00E5FF] hover:text-white transition-all duration-300 w-full text-left"
+                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-[#00BFFF]/10 text-[#00BFFF] hover:text-white transition-all duration-300 w-full text-left"
                   >
                     <LogOut className="h-4 w-4" />
                     <span className="font-medium text-sm">Entrar</span>

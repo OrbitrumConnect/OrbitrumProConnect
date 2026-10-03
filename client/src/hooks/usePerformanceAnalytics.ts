@@ -97,14 +97,8 @@ export const usePerformanceAnalytics = () => {
     // Detectar localização se disponível
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          // Aqui poderíamos fazer reverse geocoding para obter cidade/estado
-          console.log('📍 Localização detectada para analytics:', {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
-        },
-        (error) => console.log('Localização não disponível para analytics')
+        () => {},
+        () => {}
       );
     }
   }, [user]);
@@ -198,7 +192,7 @@ export const usePerformanceAnalytics = () => {
         return await response.json();
       }
     } catch (error) {
-      console.log('Erro ao buscar insights da plataforma:', error);
+      // insights fetch failed
     }
 
     // Fallback com dados simulados baseados em padrões reais
@@ -245,9 +239,6 @@ const detectDeviceType = (): 'mobile' | 'desktop' | 'tablet' => {
 
 const sendAnalyticsData = async (data: any) => {
   try {
-    console.log('🔥 DADOS COMPORTAMENTAIS COLETADOS:', data);
-    
-    // Enviar para endpoint de analytics
     await fetch('/api/analytics/behavior', {
       method: 'POST',
       headers: {
@@ -256,6 +247,6 @@ const sendAnalyticsData = async (data: any) => {
       body: JSON.stringify(data)
     });
   } catch (error) {
-    console.log('Erro ao enviar dados de analytics:', error);
+    // analytics send failed
   }
 };

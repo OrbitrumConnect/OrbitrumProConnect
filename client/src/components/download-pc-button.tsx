@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Monitor, Download, AlertCircle, CheckCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -93,7 +93,7 @@ export function DownloadPCButton({ className = "", showText = true }: DownloadPC
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="bg-[#020914]/95 border border-cyan-500/30 rounded-2xl p-6 max-w-md w-full shadow-2xl"
+              className="bg-[#000915]/95 border border-cyan-500/30 rounded-2xl p-6 max-w-md w-full shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="text-center space-y-4">

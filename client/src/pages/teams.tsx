@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Users, X, UserPlus, Briefcase, Eye, UserMinus, Lock, Info, ChevronDown, ChevronUp } from "lucide-react";
@@ -12,8 +12,8 @@ import { useAuth } from "@/hooks/useAuth";
 import type { Professional, User } from "@shared/schema";
 
 const C = {
-  bg: '#020914', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };

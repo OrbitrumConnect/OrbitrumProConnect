@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -120,7 +120,7 @@ export default function ChatWindow({ chatId }: ChatWindowProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#020914' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000915' }}>
         <div className="animate-spin w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full" />
       </div>
     );
@@ -128,7 +128,7 @@ export default function ChatWindow({ chatId }: ChatWindowProps) {
 
   if (error || !chatData) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#020914' }}>
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#000915' }}>
         <Card className="glassmorphism border-red-500/30 max-w-md">
           <CardContent className="text-center p-6">
             <X className="w-16 h-16 text-red-500 mx-auto mb-4" />
@@ -151,7 +151,7 @@ export default function ChatWindow({ chatId }: ChatWindowProps) {
   const isExpired = timeRemaining === "EXPIRADO";
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#020914' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#000915' }}>
       {/* Header */}
       <div className="border-b border-gray-700 p-4" style={{ background: 'rgba(3,18,32,0.85)' }}>
         <div className="flex items-center justify-between">

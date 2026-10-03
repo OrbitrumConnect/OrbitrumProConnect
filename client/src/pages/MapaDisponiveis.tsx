@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster';
+import { ReasonChip } from '@/components/ui/reason-chip';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import { ProfessionalModal } from '@/components/professional-modal';
 import ConversaModal from '@/components/ConversaModal';
@@ -11,7 +12,7 @@ import NetworkAside from '@/components/NetworkAside';
 import { useAuth } from '@/hooks/useAuth';
 
 const C = {
-  bg: '#00060F', cyan: '#00E5FF', blue: '#00AEEF', ink: '#EAF8FF', ink2: '#7FA9C2', ink3: '#5b7a90',
+  bg: '#00060F', cyan: '#00BFFF', blue: '#00AEEF', ink: '#EAF8FF', ink2: '#7FA9C2', ink3: '#5b7a90',
   border: 'rgba(0,190,255,0.22)', borderHot: 'rgba(0,220,255,0.5)', bg2: '#011527', card: 'rgba(3,18,32,0.9)',
 };
 
@@ -34,14 +35,7 @@ function Avatar({ src, name }: { src?: string | null; name: string }) {
   return <div style={{ width: 40, height: 40, borderRadius: '50%', background: `${C.blue}33`, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.cyan, fontWeight: 700 }}>{name?.[0]?.toUpperCase() || '?'}</div>;
 }
 
-function Chip({ label }: { label: string }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: C.ink,
-      background: `${C.blue}14`, border: `1px solid ${C.border}`, borderRadius: 11, padding: '2px 8px' }}>
-      <span style={{ color: C.cyan }}>✓</span>{label}
-    </span>
-  );
-}
+const Chip = ReasonChip;
 
 export default function MapaDisponiveis() {
   const [, setLocation] = useLocation();
@@ -100,7 +94,7 @@ export default function MapaDisponiveis() {
         const count = c.getChildCount();
         return L.divIcon({
           className: '',
-          html: `<div style="filter:${counterFilter};width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${C.cyan},${C.blue});display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#012;border:2px solid #020914;box-shadow:0 0 12px ${C.cyan}66">${count}</div>`,
+          html: `<div style="filter:${counterFilter};width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,${C.cyan},${C.blue});display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#012;border:2px solid #000915;box-shadow:0 0 12px ${C.cyan}66">${count}</div>`,
           iconSize: [40, 40], iconAnchor: [20, 20],
         });
       },
@@ -139,8 +133,8 @@ export default function MapaDisponiveis() {
           userLatLng.current = [latitude, longitude];
           const userFoto = user?.profilePhoto || (user as any)?.avatar;
           const meIcon = userFoto
-            ? L.divIcon({ className: '', html: `<div style="filter:${counterFilter};width:44px;height:44px"><img src="${userFoto}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:3px solid #00E5FF;box-shadow:0 0 12px #00E5FF88"/></div>`, iconSize: [44, 44], iconAnchor: [22, 22] })
-            : L.divIcon({ className: '', html: `<div style="width:18px;height:18px;border-radius:50%;background:#00E5FF;border:3px solid #020914;box-shadow:0 0 12px #00E5FF99"></div>`, iconSize: [18, 18], iconAnchor: [9, 9] });
+            ? L.divIcon({ className: '', html: `<div style="filter:${counterFilter};width:44px;height:44px"><img src="${userFoto}" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:3px solid #00BFFF;box-shadow:0 0 12px #00BFFF88"/></div>`, iconSize: [44, 44], iconAnchor: [22, 22] })
+            : L.divIcon({ className: '', html: `<div style="width:18px;height:18px;border-radius:50%;background:#00BFFF;border:3px solid #000915;box-shadow:0 0 12px #00BFFF99"></div>`, iconSize: [18, 18], iconAnchor: [9, 9] });
           L.marker([latitude, longitude], { icon: meIcon, zIndexOffset: 1000 }).addTo(map).bindTooltip('Você', { permanent: false });
         },
         () => {}
@@ -298,7 +292,7 @@ export default function MapaDisponiveis() {
                 <button onClick={() => { if (mapRef.current && userLatLng.current) mapRef.current.setView(userLatLng.current, 15); }}
                   title="Centralizar na minha localização"
                   style={{ position: 'absolute', bottom: 16, right: 16, zIndex: 999, width: 40, height: 40, borderRadius: '50%',
-                    background: '#020914', border: `2px solid ${C.cyan}`, color: C.cyan, fontSize: 18,
+                    background: '#000915', border: `2px solid ${C.cyan}`, color: C.cyan, fontSize: 18,
                     display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                     boxShadow: `0 0 12px ${C.cyan}44`, backdropFilter: 'blur(6px)' }}>
                   ◎

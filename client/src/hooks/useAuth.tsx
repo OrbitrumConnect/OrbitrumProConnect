@@ -132,7 +132,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     localStorage.setItem("orbtrum_auth", JSON.stringify(sessionData));
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    try { await supabase.auth.signOut(); } catch (_) {}
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("orbtrum_auth");

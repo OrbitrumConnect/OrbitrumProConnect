@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
+﻿import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home, Shield, Award, Scale, FileCheck } from "lucide-react";
 import { Link } from "wouter";
 
 export default function Certificacoes() {
   return (
-    <div className="min-h-screen text-white" style={{ background: '#020914' }}>
+    <div className="min-h-screen text-white" style={{ background: '#000915' }}>
       <div className="max-w-4xl mx-auto p-6 py-20">
         {/* Navigation */}
         <div className="flex items-center justify-between mb-8">
@@ -153,11 +153,11 @@ export default function Certificacoes() {
                 Entre em contato conosco para esclarecimentos sobre documentação e certificações necessárias.
               </p>
               <div className="space-x-4">
-                <Link href="mailto:certificacoes@orbitrum.com.br">
+                <a href="mailto:certificacoes@orbitrum.com.br">
                   <Button className="neon-button">
                     Contato Certificações
                   </Button>
-                </Link>
+                </a>
                 <Link href="/regras">
                   <Button variant="outline" className="border-cyan-500 text-cyan-400 hover:bg-cyan-500/10">
                     Ver Regras Completas

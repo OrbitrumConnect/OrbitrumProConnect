@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "wouter";
 
 interface MatrixChar {
@@ -78,7 +78,7 @@ export function MatrixFooter() {
               left: glyph.left,
               bottom: glyph.bottom,
               transform: `rotate(${glyph.rotation}deg)`,
-              textShadow: '0 0 5px #00E5FF',
+              textShadow: '0 0 5px #00BFFF',
             }}
           >
             {glyph.glyph}
@@ -91,16 +91,16 @@ export function MatrixFooter() {
         <div className="flex flex-col items-center space-y-2 text-xs text-gray-300">
           {/* Primeira linha - Links principais */}
           <div className="flex space-x-8 bg-black/40 px-4 py-1 rounded-full backdrop-blur-sm">
-            <Link href="/termos" className="hover:text-[#00E5FF] transition-colors duration-300 hover:scale-105 font-medium">
+            <Link href="/termos" className="hover:text-[#00BFFF] transition-colors duration-300 hover:scale-105 font-medium">
               Termos
             </Link>
-            <Link href="/privacidade" className="hover:text-[#00E5FF] transition-colors duration-300 hover:scale-105 font-medium">
+            <Link href="/privacidade" className="hover:text-[#00BFFF] transition-colors duration-300 hover:scale-105 font-medium">
               Privacidade
             </Link>
           </div>
           {/* Segunda linha - Regras, certificações e status */}
           <div className="flex items-center space-x-6 bg-black/40 px-4 py-1 rounded-full backdrop-blur-sm">
-            <Link href="/regras" className="hover:text-[#00E5FF] transition-colors duration-300 hover:scale-105 font-medium">
+            <Link href="/regras" className="hover:text-[#00BFFF] transition-colors duration-300 hover:scale-105 font-medium">
               Regras
             </Link>
             <Link href="/certificacoes" className="hover:text-yellow-400 transition-colors duration-300 hover:scale-105 font-medium">

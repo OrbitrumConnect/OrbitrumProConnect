@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useRoute, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/useAuth';
 import { useQueryClient } from '@tanstack/react-query';
 import Sidebar from '@/components/Sidebar';
+import { ReasonChip } from '@/components/ui/reason-chip';
 import ConversaModal from '@/components/ConversaModal';
 import { DEMO_PROS, CONF_LABEL } from '@/data/demo-professionals';
+import { Camera } from 'lucide-react';
 
 const C = {
-  bg: '#020914', bg2: '#011527', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', bg2: '#011527', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,190,255,0.22)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#EAF8FF', ink2: '#7FA9C2', ink3: '#5b7a90',
 };
@@ -25,6 +27,16 @@ export default function PerfilProfissional() {
   const [carregando, setCarregando] = useState(true);
   const [conversaId, setConversaId] = useState<number | null>(null);
   const [proOcupado, setProOcupado] = useState(false);
+  const [portfolio, setPortfolio] = useState<Array<{ id: string; url: string; descricao: string; data: string; servico: string }>>([]);
+  const [fotoAberta, setFotoAberta] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!profId) return;
+    fetch(`/api/portfolio/${profId}`)
+      .then(r => r.ok ? r.json() : [])
+      .then(items => setPortfolio(Array.isArray(items) ? items : []))
+      .catch(() => {});
+  }, [profId]);
 
   useEffect(() => {
     if (!profId) return;
@@ -94,6 +106,12 @@ export default function PerfilProfissional() {
                   <div style={{ color: C.ink3, fontSize: 13, marginTop: 4 }}>
                     {p.city ? `${p.city}${p.state ? '/' + p.state : ''}` : 'Região a combinar'}
                   </div>
+                  {p.hourlyRate && (
+                    <div style={{ marginTop: 8, fontSize: 15, color: '#5BF5A0', fontWeight: 700 }}>
+                      R$ {p.hourlyRate}/h
+                      <span style={{ fontSize: 12, color: C.ink3, fontWeight: 400, marginLeft: 6 }}>valor base definido pelo profissional</span>
+                    </div>
+                  )}
                   {proOcupado ? (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, color: '#FF9800', background: 'rgba(255,152,0,0.1)', border: '1px solid rgba(255,152,0,0.2)', borderRadius: 10, padding: '4px 12px', marginTop: 8 }}>
                       <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#FF9800' }} /> Em atendimento
@@ -152,6 +170,48 @@ export default function PerfilProfissional() {
               </div>
             )}
 
+            {/* Portfólio — trabalhos realizados */}
+            {portfolio.length > 0 && (
+              <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 20, marginBottom: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+                  <Camera size={16} style={{ color: C.cyan }} />
+                  <span style={{ fontSize: 12, color: C.ink3, letterSpacing: 1, fontWeight: 600 }}>PORTFÓLIO DE TRABALHOS</span>
+                  <span style={{ fontSize: 11, color: C.ink3, marginLeft: 'auto' }}>{portfolio.length} {portfolio.length === 1 ? 'foto' : 'fotos'}</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${window.innerWidth < 640 ? 2 : 3}, 1fr)`, gap: 8 }}>
+                  {portfolio.map((item) => (
+                    <div key={item.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', cursor: 'pointer', aspectRatio: '1', border: `1px solid ${C.border}` }}
+                      onClick={() => setFotoAberta(item.id)}>
+                      <img src={item.url} alt={item.descricao || 'Trabalho'} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      {item.servico && (
+                        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 8px 6px', background: 'linear-gradient(transparent, rgba(0,0,0,0.8))', fontSize: 11, color: C.ink, fontWeight: 500 }}>
+                          {item.servico}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Lightbox */}
+            {fotoAberta && (() => {
+              const item = portfolio.find(p => p.id === fotoAberta);
+              if (!item) return null;
+              return (
+                <div onClick={() => setFotoAberta(null)} style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: 20 }}>
+                  <img src={item.url} alt={item.descricao || ''} style={{ maxWidth: '90vw', maxHeight: '75vh', borderRadius: 12, objectFit: 'contain' }} />
+                  {(item.descricao || item.servico) && (
+                    <div style={{ marginTop: 12, textAlign: 'center', maxWidth: 500 }}>
+                      {item.servico && <div style={{ fontSize: 13, color: C.cyan, fontWeight: 600 }}>{item.servico}</div>}
+                      {item.descricao && <div style={{ fontSize: 13, color: C.ink2, marginTop: 4 }}>{item.descricao}</div>}
+                      {item.data && <div style={{ fontSize: 11, color: C.ink3, marginTop: 4 }}>{new Date(item.data).toLocaleDateString('pt-BR')}</div>}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
             {/* Por que apareceu — o diferencial Orbitrum */}
             <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 20, marginBottom: 16 }}>
               <div style={{ fontSize: 12, color: C.ink3, marginBottom: 12, letterSpacing: 1, fontWeight: 600 }}>POR QUE ESTE PROFISSIONAL APARECEU</div>
@@ -162,9 +222,7 @@ export default function PerfilProfissional() {
                   {chips.length > 0 && (
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
                       {chips.map((c, i) => (
-                        <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, color: C.ink, background: `${C.blue}14`, border: `1px solid ${C.border}`, borderRadius: 12, padding: '5px 12px' }}>
-                          <span style={{ color: C.cyan }}>✓</span>{c}
-                        </span>
+                        <ReasonChip key={i} label={c} size="md" />
                       ))}
                     </div>
                   )}

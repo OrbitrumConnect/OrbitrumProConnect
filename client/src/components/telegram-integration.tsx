@@ -62,9 +62,6 @@ export function useTelegramWebApp() {
       window.Telegram.WebApp.ready();
       window.Telegram.WebApp.expand();
       
-      console.log('🤖 Telegram Mini App inicializado!');
-      console.log('Usuário:', window.Telegram.WebApp.initDataUnsafe.user);
-      console.log('Tema:', window.Telegram.WebApp.colorScheme);
     }
   }, []);
 

@@ -182,11 +182,9 @@ const AIAutoChatSystem: React.FC<AIAutoChatSystemProps> = ({
 
       if (response.ok) {
         const history = await response.json();
-        // Mesclar histórico real com mensagens atuais
-        console.log('📞 Chat conectado - Histórico carregado');
       }
     } catch (error) {
-      console.log('Usando chat em tempo real sem histórico');
+      // fallback to real-time chat without history
     }
   };
 
@@ -285,8 +283,7 @@ const AIAutoChatSystem: React.FC<AIAutoChatSystemProps> = ({
   const sendToBackend = async (message: string) => {
     try {
       const userEmail = localStorage.getItem('userEmail') || '';
-      console.log('💬 ENVIANDO MENSAGEM:', { message, userEmail, userId });
-      
+
       const response = await fetch('/api/chat/send', {
         method: 'POST',
         headers: { 
@@ -301,12 +298,8 @@ const AIAutoChatSystem: React.FC<AIAutoChatSystemProps> = ({
       });
 
       const result = await response.json();
-      console.log('💬 RESPOSTA BACKEND:', result);
-      
+
       if (result.success) {
-        // Resposta da IA será adicionada automaticamente pelo backend
-        console.log('✅ MENSAGEM ENVIADA - Tokens debitados:', result.tokenCost);
-        
         // Aguardar resposta da IA
         setTimeout(() => {
           checkForAIResponse();
@@ -315,7 +308,7 @@ const AIAutoChatSystem: React.FC<AIAutoChatSystemProps> = ({
         console.error('❌ ERRO NO CHAT:', result.message);
       }
     } catch (error) {
-      console.log('❌ Erro ao enviar mensagem:', error);
+      // send failed silently
     }
   };
 
@@ -348,19 +341,17 @@ const AIAutoChatSystem: React.FC<AIAutoChatSystemProps> = ({
           }));
           
           setMessages(prev => [...prev, ...newAIMessages]);
-          console.log('🤖 IA RESPONDEU:', newAIMessages.length, 'mensagens');
         }
       }
     } catch (error) {
-      console.log('Erro ao verificar resposta IA:', error);
+      // AI response check failed silently
     }
   };
 
   const debitTokens = async (amount: number) => {
     try {
       const userEmail = localStorage.getItem('userEmail') || '';
-      console.log('💳 DEBITANDO TOKENS:', { amount, userEmail, userId });
-      
+
       const response = await fetch('/api/chat/send', {
         method: 'POST',
         headers: { 
@@ -375,13 +366,12 @@ const AIAutoChatSystem: React.FC<AIAutoChatSystemProps> = ({
       });
 
       const result = await response.json();
-      console.log('💬 RESPOSTA CHAT:', result);
-      
+
       if (!result.success) {
         console.error('Erro no chat:', result.message);
       }
     } catch (error) {
-      console.log('Erro ao enviar mensagem:', error);
+      // debit failed silently
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -75,9 +75,9 @@ export function ProfessionalCategoryModal({ isOpen, onComplete, onCancel, userEm
 
   return (
     <Dialog open={isOpen} onOpenChange={() => !loading && onCancel()}>
-      <DialogContent className="sm:max-w-md" style={{ background: '#020914', border: '1px solid rgba(0,174,255,0.25)' }}>
+      <DialogContent className="sm:max-w-md" style={{ background: '#000915', border: '1px solid rgba(0,174,255,0.25)' }}>
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-center" style={{ color: '#00E5FF' }}>
+          <DialogTitle className="text-xl font-bold text-center" style={{ color: '#00BFFF' }}>
             Complete seu Perfil Profissional
           </DialogTitle>
           <DialogDescription className="text-center text-sm" style={{ color: '#91A9BD' }}>Escolha sua categoria para ser encontrado na rede</DialogDescription>
@@ -102,10 +102,10 @@ export function ProfessionalCategoryModal({ isOpen, onComplete, onCancel, userEm
               setSelectedCategory(value);
               setSelectedSpecialty(""); // Reset specialty when category changes
             }}>
-              <SelectTrigger className="bg-[#020914]/50 border-gray-600 text-white">
+              <SelectTrigger className="bg-[#000915]/50 border-gray-600 text-white">
                 <SelectValue placeholder="Escolha sua área..." />
               </SelectTrigger>
-              <SelectContent className="bg-[#020914] border-gray-600">
+              <SelectContent className="bg-[#000915] border-gray-600">
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id} className="text-white hover:bg-[#061A2D]">
                     {category.name}
@@ -122,10 +122,10 @@ export function ProfessionalCategoryModal({ isOpen, onComplete, onCancel, userEm
                 Especialidade:
               </label>
               <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
-                <SelectTrigger className="bg-[#020914]/50 border-gray-600 text-white">
+                <SelectTrigger className="bg-[#000915]/50 border-gray-600 text-white">
                   <SelectValue placeholder="Sua especialidade..." />
                 </SelectTrigger>
-                <SelectContent className="bg-[#020914] border-gray-600">
+                <SelectContent className="bg-[#000915] border-gray-600">
                   {selectedCategoryData.specialties.map((specialty) => (
                     <SelectItem key={specialty} value={specialty} className="text-white hover:bg-[#061A2D]">
                       {specialty}

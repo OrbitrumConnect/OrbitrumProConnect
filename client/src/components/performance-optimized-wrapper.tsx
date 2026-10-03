@@ -21,10 +21,6 @@ export const PerformanceOptimizedWrapper = memo(({
     return () => {
       const duration = performanceMonitor.endTimer(componentName);
       
-      // Log componentes lentos para otimização futura
-      if (duration > 150) {
-        console.warn(`⚠️ Componente ${componentName} demorou ${duration.toFixed(2)}ms para renderizar`);
-      }
     };
   }, [componentName, performanceMonitor]);
 

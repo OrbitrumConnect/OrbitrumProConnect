@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Bell, Download, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const C = { navy: '#0a1628', card: '#0d1f3c', cyan: '#00E5FF', blue: '#00AEEF', border: 'rgba(0,174,255,0.15)', ink2: '#91A9BD' };
+const C = { navy: '#0a1628', card: '#0d1f3c', cyan: '#00BFFF', blue: '#00AEEF', border: 'rgba(0,174,255,0.15)', ink2: '#91A9BD' };
 
 export default function AppPromptBanner() {
   const [show, setShow] = useState(false);

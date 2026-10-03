@@ -34,7 +34,7 @@ const GPSTracking: React.FC<GPSTrackingProps> = ({ userType, userId, username })
           </div>
           <GPSLegalCompliance 
             onAccept={() => setHasAcceptedTerms(true)}
-            onDecline={() => console.log('Termos GPS rejeitados')}
+            onDecline={() => {}}
           />
         </div>
       </div>
@@ -56,8 +56,6 @@ const GPSTracking: React.FC<GPSTrackingProps> = ({ userType, userId, username })
         hasActiveService={!!activeServiceId}
         serviceId={activeServiceId}
         onLocationUpdate={(location) => {
-          console.log(`📍 ${currentUserType.toUpperCase()} localização:`, location);
-          // Aqui enviaria a localização para o backend para outros usuários vinculados
         }}
       />
 
@@ -69,23 +67,17 @@ const GPSTracking: React.FC<GPSTrackingProps> = ({ userType, userId, username })
         hasActiveCall={hasActiveCall}
         onAcceptMessaging={() => {
           setMessagingAccepted(true);
-          console.log('✅ Permissão para mensagens aceita');
         }}
         onRejectMessaging={() => {
           setMessagingAccepted(false);
-          console.log('❌ Permissão para mensagens rejeitada');
         }}
         onEndTracking={(reason) => {
-          console.log('🛑 Encerrando rastreamento:', reason);
           setIsTrackingActive(false);
           setActiveServiceId(undefined);
           setHasActiveCall(false);
-          // Aqui notificaria o backend sobre o encerramento
         }}
         onStartCall={() => {
-          console.log('📞 Iniciando chamada');
           setHasActiveCall(true);
-          // Aqui iniciaria sistema de chamada
         }}
       />
 

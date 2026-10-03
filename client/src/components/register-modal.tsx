@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,9 +118,9 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md" style={{ background: '#020914', border: '1px solid rgba(0,174,255,0.25)' }}>
+      <DialogContent className="sm:max-w-md" style={{ background: '#000915', border: '1px solid rgba(0,174,255,0.25)' }}>
         <DialogHeader>
-          <DialogTitle className="text-center text-xl font-bold" style={{ color: '#00E5FF' }}>
+          <DialogTitle className="text-center text-xl font-bold" style={{ color: '#00BFFF' }}>
             Criar Conta
           </DialogTitle>
           <DialogDescription className="text-center text-sm" style={{ color: '#91A9BD' }}>Preencha seus dados para entrar na rede</DialogDescription>
@@ -129,7 +129,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Nome Completo */}
           <div className="space-y-2">
-            <Label htmlFor="fullName" className="text-[#00E5FF]">
+            <Label htmlFor="fullName" className="text-[#00BFFF]">
               Nome Completo *
             </Label>
             <div className="relative">
@@ -140,7 +140,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 placeholder="Seu nome completo"
                 value={formData.fullName}
                 onChange={(e) => updateField('fullName', e.target.value)}
-                className="pl-10 bg-transparent border-gray-600 focus:border-[#00E5FF] text-white placeholder-gray-400"
+                className="pl-10 bg-transparent border-gray-600 focus:border-[#00BFFF] text-white placeholder-gray-400"
                 required
               />
             </div>
@@ -148,7 +148,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
 
           {/* Username */}
           <div className="space-y-2">
-            <Label htmlFor="username" className="text-[#00E5FF]">
+            <Label htmlFor="username" className="text-[#00BFFF]">
               Nome de Usuário *
             </Label>
             <div className="relative">
@@ -159,7 +159,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 placeholder="usuario123"
                 value={formData.username}
                 onChange={(e) => updateField('username', e.target.value)}
-                className="pl-10 bg-transparent border-gray-600 focus:border-[#00E5FF] text-white placeholder-gray-400"
+                className="pl-10 bg-transparent border-gray-600 focus:border-[#00BFFF] text-white placeholder-gray-400"
                 required
               />
             </div>
@@ -167,7 +167,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-[#00E5FF]">
+            <Label htmlFor="email" className="text-[#00BFFF]">
               E-mail *
             </Label>
             <div className="relative">
@@ -178,7 +178,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 placeholder="seu@email.com"
                 value={formData.email}
                 onChange={(e) => updateField('email', e.target.value)}
-                className="pl-10 bg-transparent border-gray-600 focus:border-[#00E5FF] text-white placeholder-gray-400"
+                className="pl-10 bg-transparent border-gray-600 focus:border-[#00BFFF] text-white placeholder-gray-400"
                 required
               />
             </div>
@@ -186,7 +186,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
 
           {/* Telefone */}
           <div className="space-y-2">
-            <Label htmlFor="phone" className="text-[#00E5FF]">
+            <Label htmlFor="phone" className="text-[#00BFFF]">
               Telefone (opcional)
             </Label>
             <div className="relative">
@@ -197,14 +197,14 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 placeholder="(11) 99999-9999"
                 value={formData.phone}
                 onChange={(e) => updateField('phone', e.target.value)}
-                className="pl-10 bg-transparent border-gray-600 focus:border-[#00E5FF] text-white placeholder-gray-400"
+                className="pl-10 bg-transparent border-gray-600 focus:border-[#00BFFF] text-white placeholder-gray-400"
               />
             </div>
           </div>
 
           {/* Senha */}
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-[#00E5FF]">
+            <Label htmlFor="password" className="text-[#00BFFF]">
               Senha *
             </Label>
             <div className="relative">
@@ -215,13 +215,13 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) => updateField('password', e.target.value)}
-                className="pl-10 pr-10 bg-transparent border-gray-600 focus:border-[#00E5FF] text-white placeholder-gray-400"
+                className="pl-10 pr-10 bg-transparent border-gray-600 focus:border-[#00BFFF] text-white placeholder-gray-400"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#00E5FF]"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#00BFFF]"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -230,7 +230,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
 
           {/* Confirmar Senha */}
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword" className="text-[#00E5FF]">
+            <Label htmlFor="confirmPassword" className="text-[#00BFFF]">
               Confirmar Senha *
             </Label>
             <div className="relative">
@@ -241,13 +241,13 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 placeholder="••••••••"
                 value={formData.confirmPassword}
                 onChange={(e) => updateField('confirmPassword', e.target.value)}
-                className="pl-10 pr-10 bg-transparent border-gray-600 focus:border-[#00E5FF] text-white placeholder-gray-400"
+                className="pl-10 pr-10 bg-transparent border-gray-600 focus:border-[#00BFFF] text-white placeholder-gray-400"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#00E5FF]"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#00BFFF]"
               >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -260,15 +260,15 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
               id="terms"
               checked={formData.acceptTerms}
               onCheckedChange={(checked: any) => updateField('acceptTerms', checked as boolean)}
-              className="border-[#00E5FF]"
+              className="border-[#00BFFF]"
             />
             <Label htmlFor="terms" className="text-sm text-gray-300">
               Aceito os{" "}
-              <a href="/termos" target="_blank" className="text-[#00E5FF] hover:underline">
+              <a href="/termos" target="_blank" className="text-[#00BFFF] hover:underline">
                 termos de uso
               </a>{" "}
               e{" "}
-              <a href="/privacidade" target="_blank" className="text-[#00E5FF] hover:underline">
+              <a href="/privacidade" target="_blank" className="text-[#00BFFF] hover:underline">
                 política de privacidade
               </a>
             </Label>
@@ -279,7 +279,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
             <Button
               type="submit"
               disabled={registerMutation.isPending}
-              className="w-full bg-[#00E5FF] hover:bg-[#00E5FF]/80 text-black font-semibold"
+              className="w-full bg-[#00BFFF] hover:bg-[#00BFFF]/80 text-black font-semibold"
             >
               {registerMutation.isPending ? "Criando..." : "Criar Conta"}
             </Button>
@@ -290,7 +290,7 @@ export function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModa
                 <button
                   type="button"
                   onClick={onSwitchToLogin}
-                  className="text-[#00E5FF] hover:underline"
+                  className="text-[#00BFFF] hover:underline"
                 >
                   Fazer login
                 </button>

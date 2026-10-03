@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,7 @@ export function GamePage() {
   };
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden" style={{ background: '#020914', overflow: 'hidden' }}>
+    <div className="min-h-screen w-full relative overflow-hidden" style={{ background: '#000915', overflow: 'hidden' }}>
       <StarfieldBackground />
       
       {/* Header */}

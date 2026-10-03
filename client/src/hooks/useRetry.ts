@@ -26,8 +26,6 @@ export function useRetry<T>(
         setAttemptCount(0);
         return result;
       } catch (error) {
-        console.warn(`🔄 Tentativa ${attempt}/${maxAttempts} falhou:`, error);
-        
         if (onError) {
           onError(error as Error, attempt);
         }

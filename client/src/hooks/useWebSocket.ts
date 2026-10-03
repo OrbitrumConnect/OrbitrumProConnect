@@ -31,7 +31,6 @@ export function useWebSocket() {
     wsRef.current = ws;
 
     ws.onopen = () => {
-      // console.log('🔗 WebSocket conectado'); // Silenciado para evitar spam de logs
       setIsConnected(true);
       
       // Autenticar no WebSocket
@@ -53,7 +52,6 @@ export function useWebSocket() {
     };
 
     ws.onclose = () => {
-      // console.log('🔌 WebSocket desconectado'); // Silenciado para logs limpos
       setIsConnected(false);
     };
 
@@ -85,8 +83,6 @@ export function useWebSocket() {
         break;
       
       case 'admin_notification':
-        // Mostrar notificação para o usuário
-        console.log('📢 Notificação do admin:', message.data);
         break;
     }
   };

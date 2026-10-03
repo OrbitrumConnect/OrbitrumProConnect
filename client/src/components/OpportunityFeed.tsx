@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 
 const C = {
   bg2: '#061A2D', card: 'rgba(3,18,32,0.92)', surface: '#0A1929',
-  cyan: '#00E5FF', blue: '#00AEEF', green: '#4ADE80', amber: '#F59E0B',
+  cyan: '#00BFFF', blue: '#00AEEF', green: '#4ADE80', amber: '#F59E0B',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
   border: 'rgba(0,174,255,0.18)',
 };
@@ -16,6 +16,7 @@ interface Opportunity {
   cidade?: string;
   createdAt: string;
   recomendacoes: Array<{ profId: number; profName: string; byUserName: string }>;
+  interessados: Array<{ profId: number; profName: string; profTitle?: string; timestamp: string }>;
 }
 
 export default function OpportunityFeed() {
@@ -62,6 +63,11 @@ export default function OpportunityFeed() {
             {o.recomendacoes.length > 0 && (
               <div style={{ fontSize: 12, color: C.green, display: 'flex', alignItems: 'center', gap: 4 }}>
                 <span>✓</span> {o.recomendacoes.length} recomendaç{o.recomendacoes.length === 1 ? 'ão' : 'ões'}
+              </div>
+            )}
+            {o.interessados?.length > 0 && (
+              <div style={{ fontSize: 12, color: C.amber, display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
+                <span>⚡</span> {o.interessados.length} profissiona{o.interessados.length === 1 ? 'l' : 'is'} interessado{o.interessados.length === 1 ? '' : 's'}
               </div>
             )}
           </div>

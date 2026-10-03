@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import { useAuth } from '@/hooks/useAuth';
 import { useQueryClient } from '@tanstack/react-query';
 import { DEMO_PROS, CONF_LABEL } from '@/data/demo-professionals';
+import { ReasonChip } from '@/components/ui/reason-chip';
 
 interface ProfessionalModalProps {
   isOpen: boolean;
@@ -135,6 +136,12 @@ export function ProfessionalModal({ isOpen, onClose, professionalId, onConectar 
                     {p.city ? `${p.city}${p.state ? '/' + p.state : ''}` : 'Região a combinar'}
                     {proOcupado ? <span style={{ color: '#FF9800' }}> · Ocupado</span> : p.available ? <span style={{ color: C.cyan }}> · Disponível</span> : ''}
                   </div>
+                  {p.hourlyRate && (
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 13, color: '#5BF5A0', fontWeight: 600 }}>
+                      R$ {p.hourlyRate}/h
+                      <span style={{ fontSize: 11, color: C.ink3, fontWeight: 400 }}>· valor base do profissional</span>
+                    </div>
+                  )}
                 </div>
               </div>
               <button onClick={onClose} style={{ background: 'none', border: 'none', color: C.ink2, fontSize: 22, cursor: 'pointer' }}>×</button>
@@ -181,9 +188,7 @@ export function ProfessionalModal({ isOpen, onClose, professionalId, onConectar 
             {(chips.length > 0 || conexoesEmComum > 0) && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
                 {chips.map((c, i) => (
-                  <span key={i} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, color: C.ink, background: `${C.blue}14`, border: `1px solid ${C.border}`, borderRadius: 12, padding: '3px 10px' }}>
-                    <span style={{ color: C.cyan }}>✓</span>{c}
-                  </span>
+                  <ReasonChip key={i} label={c} size="md" />
                 ))}
                 {conexoesEmComum > 0 && (
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, color: C.ink2, background: 'transparent', border: `1px solid ${C.border}`, borderRadius: 12, padding: '3px 10px' }}>

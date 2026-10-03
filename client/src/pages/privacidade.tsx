@@ -2,285 +2,172 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "wouter";
 
+const C = {
+  bg: '#000915', cyan: '#00BFFF', ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
+  border: 'rgba(0,174,255,0.18)', card: 'rgba(3,18,32,0.9)',
+};
+
 export default function Privacidade() {
   return (
-    <div className="min-h-screen text-white" style={{ background: '#020914' }}>
+    <div className="min-h-screen text-white" style={{ background: C.bg }}>
       <div className="max-w-4xl mx-auto p-6 py-20">
-        {/* Navigation */}
         <div className="flex items-center justify-between mb-8">
           <Link href="/">
-            <Button variant="ghost" className="text-cyan-400 hover:text-cyan-300 transition-all">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
+            <Button variant="ghost" style={{ color: C.cyan }}>
+              <ArrowLeft className="h-4 w-4 mr-2" /> Voltar
             </Button>
           </Link>
           <Link href="/">
-            <Button variant="ghost" className="text-cyan-400 hover:text-cyan-300 transition-all">
-              <Home className="h-4 w-4 mr-2" />
-              Home
+            <Button variant="ghost" style={{ color: C.cyan }}>
+              <Home className="h-4 w-4 mr-2" /> Home
             </Button>
           </Link>
         </div>
-        
-        <h1 className="text-4xl font-bold mb-8 text-cyan-400 text-center">
-          Política de Privacidade - Orbitrum Connect
+
+        <h1 className="text-4xl font-bold mb-2 text-center" style={{ color: C.cyan }}>
+          Política de Privacidade
         </h1>
-        
-        <div className="glassmorphism rounded-xl p-8 space-y-8">
-          <section>
-            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">1. Introdução</h2>
-            <p className="text-gray-300 leading-relaxed">
-              A <strong>Orbitrum Connect</strong> valoriza e protege a privacidade dos seus usuários. 
-              Esta política descreve como coletamos, usamos, armazenamos e protegemos suas informações 
-              pessoais na nossa plataforma.
-            </p>
-          </section>
+        <p className="text-center mb-8" style={{ color: C.ink3, fontSize: 14 }}>
+          Orbitrum — Privacidade por contexto: quem precisa saber?
+        </p>
 
-          <section>
-            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">2. Dados Coletados por Tipo de Usuário</h2>
-            
-            <div className="space-y-4">
-              <div className="glassmorphism rounded-lg p-4 border border-cyan-500/30">
-                <h3 className="text-lg font-semibold text-cyan-400 mb-2">2.1 Usuários Visitantes (Não Logados)</h3>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li><strong>Dados NÃO coletados:</strong> Não coletamos dados pessoais identificáveis</li>
-                  <li><strong>Cookies anônimos:</strong> Apenas para melhorar a experiência de navegação</li>
-                  <li><strong>Dados de navegação:</strong> Páginas visitadas, tempo de permanência (anonimizados)</li>
-                  <li><strong>Análise de uso:</strong> Dados agregados para melhorias da plataforma</li>
-                </ul>
-                <p className="text-sm text-cyan-300 mt-2">
-                  <strong>Importante:</strong> No modo visitante, você mantém total anonimato. 
-                  Nenhum dado pessoal é solicitado ou armazenado.
-                </p>
-              </div>
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 16, padding: 32 }} className="space-y-8">
 
-              <div className="glassmorphism rounded-lg p-4 border border-green-500/30">
-                <h3 className="text-lg font-semibold text-green-400 mb-2">2.2 Usuários Logados (Clientes)</h3>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li><strong>Dados básicos:</strong> Nome, email, senha (criptografada)</li>
-                  <li><strong>Dados de perfil:</strong> Foto, preferências, histórico de atividades</li>
-                  <li><strong>Dados de pagamento:</strong> Informações de planos contratados</li>
-                  <li><strong>Dados de uso:</strong> Tokens, jogos, interações na plataforma</li>
-                  <li><strong>Comunicações:</strong> Mensagens trocadas com profissionais</li>
-                </ul>
-              </div>
+          <Section n="1" title="Introdução">
+            <p>O <strong>Orbitrum</strong> trata dados pessoais conforme a Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018). Esta política descreve quais dados coletamos, por que, como protegemos e quais são seus direitos.</p>
+            <p>Nosso princípio: <strong>privacidade por contexto</strong> — coletamos e expomos apenas o que é necessário para a finalidade da conexão. O Trust Graph (rede de fatos relacionais) não autoriza exposição ilimitada.</p>
+          </Section>
 
-              <div className="glassmorphism rounded-lg p-4 border border-purple-500/30">
-                <h3 className="text-lg font-semibold text-purple-400 mb-2">2.3 Profissionais Cadastrados</h3>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li><strong>Dados básicos:</strong> Nome completo, email, senha (criptografada)</li>
-                  <li><strong>Dados obrigatórios:</strong> CPF, CEP, comprovante de residência</li>
-                  <li><strong>Dados financeiros:</strong> Chave Pix para recebimentos</li>
-                  <li><strong>Dados profissionais:</strong> Portfólio, avaliações, serviços oferecidos</li>
-                  <li><strong>Dados de verificação:</strong> Documentos para validação de identidade</li>
-                </ul>
-                <p className="text-sm text-purple-300 mt-2">
-                  <strong>Justificativa:</strong> Dados obrigatórios são necessários para garantir 
-                  a segurança das transações e cumprimento de obrigações legais.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">3. Como Usamos Seus Dados</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-semibold text-yellow-400 mb-2">3.1 Finalidades do Tratamento</h3>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li>Fornecimento e melhoria dos serviços da plataforma</li>
-                  <li>Processamento de pagamentos e transações</li>
-                  <li>Comunicação entre usuários e suporte técnico</li>
-                  <li>Prevenção de fraudes e atividades suspeitas</li>
-                  <li>Cumprimento de obrigações legais e regulamentares</li>
-                  <li>Análise estatística para melhorias da plataforma</li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-yellow-400 mb-2">3.2 Base Legal</h3>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li><strong>Consentimento:</strong> Para dados não essenciais ao serviço</li>
-                  <li><strong>Execução contratual:</strong> Para prestação dos serviços contratados</li>
-                  <li><strong>Obrigação legal:</strong> Para cumprimento de leis e regulamentos</li>
-                  <li><strong>Legítimo interesse:</strong> Para segurança e melhorias da plataforma</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">4. Segurança e Proteção dos Dados</h2>
-            
-            <div className="space-y-4">
-              <div className="glassmorphism rounded-lg p-4 border border-red-500/30">
-                <h3 className="text-lg font-semibold text-red-400 mb-2">4.1 Medidas de Segurança</h3>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li><strong>Criptografia:</strong> Todos os dados sensíveis são criptografados</li>
-                  <li><strong>Controle de acesso:</strong> Acesso restrito apenas a pessoal autorizado</li>
-                  <li><strong>Monitoramento:</strong> Sistemas de detecção de invasões e atividades suspeitas</li>
-                  <li><strong>Backups seguros:</strong> Backup regular dos dados em ambientes protegidos</li>
-                  <li><strong>Auditoria:</strong> Revisões regulares de segurança e conformidade</li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-red-400 mb-2">4.2 Tratamento de Dados Sensíveis</h3>
-                <p className="text-gray-300">
-                  Dados como CPF, documentos de identidade e informações financeiras recebem 
-                  tratamento especial com criptografia avançada e acesso ultra-restrito. 
-                  Estes dados são usados exclusivamente para verificação de identidade e 
-                  processamento de pagamentos.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">5. Compartilhamento de Dados</h2>
-            
-            <div className="space-y-4">
-              <p className="text-gray-300">
-                <strong>5.1 Não vendemos dados:</strong> Nunca vendemos, alugamos ou comercializamos 
-                seus dados pessoais com terceiros.
-              </p>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-yellow-400 mb-2">5.2 Compartilhamento Limitado</h3>
-                <p className="text-gray-300 mb-2">Compartilhamos dados apenas quando necessário:</p>
-                <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                  <li>Com processadores de pagamento (dados financeiros mínimos necessários)</li>
-                  <li>Com autoridades legais (quando exigido por lei)</li>
-                  <li>Entre usuários da plataforma (apenas informações de perfil público)</li>
-                  <li>Com prestadores de serviços técnicos (sob acordos rígidos de confidencialidade)</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">6. Seus Direitos</h2>
-            
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-green-400 mb-2">6.1 Direitos Garantidos pela LGPD</h3>
-              <ul className="text-gray-300 space-y-1 list-disc list-inside">
-                <li><strong>Acesso:</strong> Solicitar informações sobre como seus dados são tratados</li>
-                <li><strong>Correção:</strong> Corrigir dados incompletos, inexatos ou desatualizados</li>
-                <li><strong>Exclusão:</strong> Solicitar a exclusão de dados desnecessários ou tratados indevidamente</li>
-                <li><strong>Portabilidade:</strong> Solicitar a portabilidade de seus dados</li>
-                <li><strong>Oposição:</strong> Opor-se ao tratamento baseado em legítimo interesse</li>
-                <li><strong>Revogação:</strong> Revogar consentimento a qualquer momento</li>
-              </ul>
-              
-              <div className="glassmorphism rounded-lg p-4 border border-green-500/30 mt-4">
-                <p className="text-green-300">
-                  <strong>Como exercer seus direitos:</strong> Entre em contato através dos canais 
-                  oficiais da plataforma. Responderemos em até 15 dias úteis.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold neon-text mb-4">7. Retenção de Dados</h2>
-            <div className="space-y-4">
-              <p className="text-gray-300">
-                <strong>7.1 Período de retenção:</strong> Mantemos seus dados apenas pelo tempo 
-                necessário para as finalidades descritas ou conforme exigido por lei.
-              </p>
-              <p className="text-gray-300">
-                <strong>7.2 Exclusão automática:</strong> Dados de usuários inativos por mais de 
-                2 anos são automaticamente removidos, salvo obrigações legais.
-              </p>
-              <p className="text-gray-300">
-                <strong>7.3 Dados obrigatórios:</strong> Alguns dados podem ser mantidos por 
-                períodos legais específicos mesmo após o encerramento da conta.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold neon-text mb-4">8. Cookies e Tecnologias Similares</h2>
-            <div className="space-y-4">
-              <p className="text-gray-300">
-                <strong>8.1 Cookies essenciais:</strong> Necessários para o funcionamento básico da plataforma.
-              </p>
-              <p className="text-gray-300">
-                <strong>8.2 Cookies de análise:</strong> Ajudam a entender como os usuários interagem 
-                com a plataforma (podem ser desabilitados).
-              </p>
-              <p className="text-gray-300">
-                <strong>8.3 Controle:</strong> Você pode gerenciar cookies através das configurações 
-                do seu navegador.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold neon-text mb-4">9. Sistema GPS e Geolocalização</h2>
-            <div className="space-y-4">
-              <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3 flex items-center gap-2">
-                  🗺️ Como protegemos sua localização
-                </h4>
-                <div className="space-y-2 text-sm text-gray-300">
-                  <p><strong>• Consentimento explícito:</strong> GPS ativado apenas com sua autorização</p>
-                  <p><strong>• Finalidade específica:</strong> Localização usada para conectar com profissionais próximos</p>
-                  <p><strong>• Não compartilhamento:</strong> Dados nunca vendidos ou cedidos a terceiros</p>
-                  <p><strong>• Controle total:</strong> Rastreamento pode ser desativado a qualquer momento</p>
-                </div>
-              </div>
-              
-              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
-                <h4 className="text-white font-medium mb-3 flex items-center gap-2">
-                  🛡️ Licenças de Software Utilizadas
-                </h4>
-                <div className="space-y-2 text-sm text-gray-300">
-                  <p><strong>• Leaflet.js:</strong> BSD-2-Clause (uso comercial permitido)</p>
-                  <p><strong>• OpenStreetMap:</strong> Open Database License (dados colaborativos)</p>
-                  <p><strong>• Geolocalização HTML5:</strong> Padrão W3C (API nativa dos navegadores)</p>
-                  <p className="text-green-400">✅ Todas as tecnologias são licenciadas e seguras para uso comercial</p>
-                </div>
-              </div>
-
-              <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-3">
-                <p className="text-orange-400 font-medium text-sm">
-                  ⚠️ <strong>Importante:</strong> A plataforma não se responsabiliza por uso inadequado das informações de localização por profissionais. Denuncie comportamentos suspeitos.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold neon-text mb-4">10. Alterações na Política</h2>
-            <p className="text-gray-300 leading-relaxed">
-              Esta política pode ser atualizada periodicamente. Mudanças significativas serão 
-              comunicadas através da plataforma. Recomendamos revisar esta política regularmente 
-              para se manter informado sobre como protegemos seus dados.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-semibold neon-text mb-4">11. Contato e DPO</h2>
-            <div className="glassmorphism rounded-lg p-4 border border-cyan-500/30">
-              <p className="text-gray-300 mb-2">
-                Para questões sobre privacidade, exercício de direitos ou dúvidas sobre esta política:
-              </p>
-              <ul className="text-cyan-300 space-y-1">
-                <li><strong>Canal oficial:</strong> Através da plataforma</li>
-                <li><strong>Encarregado de Dados (DPO):</strong> Disponível para questões específicas sobre LGPD</li>
-                <li><strong>Tempo de resposta:</strong> Até 15 dias úteis</li>
+          <Section n="2" title="Dados coletados">
+            <div style={{ background: 'rgba(0,191,255,0.06)', border: `1px solid rgba(0,191,255,0.2)`, borderRadius: 12, padding: 16 }} className="mb-4">
+              <h4 style={{ color: C.cyan, fontWeight: 600, marginBottom: 8 }}>Cliente</h4>
+              <ul className="space-y-1 list-disc list-inside" style={{ color: C.ink2 }}>
+                <li>Nome, email, senha (criptografada via Supabase Auth)</li>
+                <li>Foto de perfil (opcional)</li>
+                <li>Localização aproximada (quando autorizada, para busca de profissionais)</li>
+                <li>Histórico de conexões e experiências na rede</li>
+                <li>Mensagens trocadas com profissionais</li>
               </ul>
             </div>
-          </section>
 
-          <div className="text-center text-sm text-gray-500 mt-8 pt-4 border-t border-gray-600">
-            <p>Última atualização: 22 de Julho de 2025 (adicionada seção GPS)</p>
-            <p>Orbitrum Connect - Compromisso com sua privacidade e proteção GPS</p>
+            <div style={{ background: 'rgba(91,245,160,0.06)', border: '1px solid rgba(91,245,160,0.2)', borderRadius: 12, padding: 16 }} className="mb-4">
+              <h4 style={{ color: '#5BF5A0', fontWeight: 600, marginBottom: 8 }}>Profissional</h4>
+              <ul className="space-y-1 list-disc list-inside" style={{ color: C.ink2 }}>
+                <li>Nome completo, email, telefone</li>
+                <li>CPF (verificação de identidade)</li>
+                <li>CEP e endereço (área de atuação)</li>
+                <li>Chave PIX (recebimentos)</li>
+                <li>Foto do rosto (identificação e segurança)</li>
+                <li>Comprovante de residência (verificação)</li>
+                <li>Portfólio, certificados, qualificações (voluntários)</li>
+                <li>Experiências e fatos relacionais validados pela rede</li>
+              </ul>
+              <p className="mt-3 text-sm" style={{ color: '#5BF5A0' }}>
+                <strong>Justificativa:</strong> dados obrigatórios do profissional garantem segurança para clientes e rastreabilidade em caso de incidentes, conforme legislação aplicável.
+              </p>
+            </div>
+
+            <div style={{ background: 'rgba(255,209,102,0.06)', border: '1px solid rgba(255,209,102,0.2)', borderRadius: 12, padding: 16 }}>
+              <h4 style={{ color: '#FFD166', fontWeight: 600, marginBottom: 8 }}>Fatos relacionais</h4>
+              <p style={{ color: C.ink2 }}>Experiências, indicações, conexões e validações são registradas como fatos na rede. Esses fatos têm nível de confiança (declarado &lt; indicado &lt; validado &lt; verificado) e podem ter validade temporal. O sistema nunca expõe o grafo completo — apenas explica conexões relevantes (§35).</p>
+            </div>
+          </Section>
+
+          <Section n="3" title="Finalidade e base legal">
+            <ul className="space-y-2 list-disc list-inside" style={{ color: C.ink2 }}>
+              <li><strong style={{ color: C.ink }}>Conexão entre pessoas</strong> — base: execução contratual + consentimento</li>
+              <li><strong style={{ color: C.ink }}>Registro de experiências</strong> — base: legítimo interesse (melhoria da rede)</li>
+              <li><strong style={{ color: C.ink }}>Verificação de identidade do profissional</strong> — base: obrigação legal + segurança</li>
+              <li><strong style={{ color: C.ink }}>Localização</strong> — base: consentimento explícito (pode ser revogado)</li>
+              <li><strong style={{ color: C.ink }}>Prevenção de fraude</strong> — base: legítimo interesse</li>
+              <li><strong style={{ color: C.ink }}>Cumprimento legal</strong> — base: obrigação legal (Marco Civil, LGPD, Decretos 12.975/12.976 de 2026)</li>
+            </ul>
+          </Section>
+
+          <Section n="4" title="Localização e GPS">
+            <ul className="space-y-2 list-disc list-inside" style={{ color: C.ink2 }}>
+              <li>Localização é <strong>opcional</strong> e requer consentimento explícito</li>
+              <li>Usada para contexto suficiente (profissionais próximos), <strong>não vigilância</strong></li>
+              <li>Estado de presença: explícito, autorizado e temporário</li>
+              <li>Pode ser desativada a qualquer momento</li>
+              <li>Dados de localização não são vendidos ou cedidos a terceiros</li>
+            </ul>
+            <p className="mt-3" style={{ fontSize: 13, color: C.ink3 }}>Tecnologias: Leaflet.js (BSD-2), OpenStreetMap (ODbL), HTML5 Geolocation (W3C) — todas licenciadas para uso comercial.</p>
+          </Section>
+
+          <Section n="5" title="Agentes e IA">
+            <p>O Orbitrum pode disponibilizar interfaces para agentes de IA externos consultarem contexto da rede. Nesses casos:</p>
+            <ul className="space-y-1 list-disc list-inside mt-3" style={{ color: C.ink2 }}>
+              <li>Agentes recebem apenas o contexto necessário, nunca o grafo completo</li>
+              <li>Acesso autenticado com escopo, rate-limit e auditoria</li>
+              <li>IA não é fonte de verdade — o Orbitrum é</li>
+              <li>Ações de agentes passam por validação antes de gravar dados</li>
+            </ul>
+          </Section>
+
+          <Section n="6" title="Segurança">
+            <ul className="space-y-1 list-disc list-inside" style={{ color: C.ink2 }}>
+              <li>Autenticação via Supabase Auth (Google OAuth + email/senha)</li>
+              <li>Senhas criptografadas (nunca armazenadas em texto)</li>
+              <li>Row Level Security (RLS) no banco de dados</li>
+              <li>Dados sensíveis (CPF, PIX) com acesso restrito</li>
+              <li>Auditoria de acessos e modificações</li>
+            </ul>
+          </Section>
+
+          <Section n="7" title="Compartilhamento">
+            <p><strong>Nunca vendemos seus dados.</strong> Compartilhamos apenas quando necessário:</p>
+            <ul className="space-y-1 list-disc list-inside mt-3" style={{ color: C.ink2 }}>
+              <li>Com provedor de pagamento (PSP) — dados mínimos para processamento</li>
+              <li>Com autoridades legais — quando exigido por lei</li>
+              <li>Entre usuários — apenas informações de perfil público e contexto da conexão</li>
+              <li>Com agentes de IA autorizados — contexto mínimo necessário, com auditoria</li>
+            </ul>
+          </Section>
+
+          <Section n="8" title="Seus direitos (LGPD)">
+            <ul className="space-y-2 list-disc list-inside" style={{ color: C.ink2 }}>
+              <li><strong style={{ color: C.ink }}>Acesso</strong> — saber quais dados temos sobre você</li>
+              <li><strong style={{ color: C.ink }}>Correção</strong> — corrigir dados inexatos ou desatualizados</li>
+              <li><strong style={{ color: C.ink }}>Exclusão</strong> — solicitar exclusão de dados desnecessários</li>
+              <li><strong style={{ color: C.ink }}>Portabilidade</strong> — solicitar seus dados em formato estruturado</li>
+              <li><strong style={{ color: C.ink }}>Oposição</strong> — opor-se a tratamento baseado em legítimo interesse</li>
+              <li><strong style={{ color: C.ink }}>Revogação</strong> — revogar consentimento a qualquer momento</li>
+            </ul>
+            <p className="mt-3" style={{ color: C.ink2 }}>Para exercer seus direitos, entre em contato pelos canais oficiais. Prazo de resposta: até 15 dias úteis.</p>
+          </Section>
+
+          <Section n="9" title="Retenção">
+            <ul className="space-y-1 list-disc list-inside" style={{ color: C.ink2 }}>
+              <li>Dados mantidos enquanto necessários para a finalidade ou por obrigação legal</li>
+              <li>Fatos relacionais são preservados (não apagados), pois são evidência histórica da rede</li>
+              <li>Conta inativa por mais de 2 anos: dados removidos, salvo obrigações legais</li>
+            </ul>
+          </Section>
+
+          <Section n="10" title="Alterações">
+            <p style={{ color: C.ink2 }}>Esta política pode ser atualizada. Mudanças significativas serão comunicadas pela plataforma. A legislação pode alterar a implementação, não a tese de privacidade do produto.</p>
+          </Section>
+
+          <Section n="11" title="Contato">
+            <p style={{ color: C.ink2 }}>Para questões sobre privacidade ou exercício de direitos LGPD, entre em contato pelos canais oficiais da plataforma. Prazo de resposta: até 15 dias úteis.</p>
+          </Section>
+
+          <div className="text-center text-sm mt-8 pt-4" style={{ borderTop: `1px solid ${C.border}`, color: C.ink3 }}>
+            <p>Última atualização: 03 de Outubro de 2026</p>
+            <p>Orbitrum — Todos os direitos reservados</p>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+function Section({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+  return (
+    <section>
+      <h2 className="text-xl font-semibold mb-4" style={{ color: '#00BFFF' }}>{n}. {title}</h2>
+      <div style={{ color: '#B8CDE0', lineHeight: 1.7, fontSize: 14 }} className="space-y-3">{children}</div>
+    </section>
   );
 }

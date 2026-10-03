@@ -122,8 +122,7 @@ const ServiceTracking: React.FC<ServiceTrackingProps> = ({
           });
         },
         (error) => {
-          console.warn('Erro ao obter localização:', error);
-          resolve({ lat: 0, lng: 0 }); // Fallback
+          resolve({ lat: 0, lng: 0 });
         }
       );
     });

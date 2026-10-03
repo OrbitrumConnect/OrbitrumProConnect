@@ -24,7 +24,7 @@ interface OrbitSystemProps {
 
 // Memoizado para evitar re-renders desnecessários
 const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onSearchOpened, onSearchStateChange }: OrbitSystemProps) => {
-  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [searchExpanded, setSearchExpanded] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [searchResults, setSearchResults] = useState<Professional[]>([]);
@@ -223,54 +223,26 @@ const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onS
   ], []);
 
   const handleBrainClick = () => {
-    // ADMIN BYPASS: Admin pode pesquisar sem restrições
-    if (isAdmin) {
-      if (searchExpanded) {
-        setSearchExpanded(false);
-        setHasSearched(false);
-        setAccumulatedProfessionals([]);
-        setSearchQuery("");
-        setSearchResults([]);
-      } else {
-        setSearchExpanded(true);
-      }
-      return;
-    }
-
-    // Bloquear pesquisa para usuários deslogados
-    if (!isAuthenticated) {
-      // Verificar se usuário free já usou pesquisa mensal
-      const freeSearchUsed = localStorage.getItem('free_search_used');
-      const currentMonth = new Date().getMonth() + '-' + new Date().getFullYear();
-      
-      if (freeSearchUsed === currentMonth) {
-        setShowLimitModal(true);
-        return;
-      }
-      
-      // Marcar que a pesquisa foi usada este mês
-      localStorage.setItem('free_search_used', currentMonth);
-      
-      // Permitir a pesquisa apenas uma vez
-      setSearchExpanded(true);
-      return;
-    }
-
-    if (searchExpanded) {
-      // If closing search, reset to initial 10 best professionals
-      setSearchExpanded(false);
+    // Clicar no brain reseta a busca mas mantém a barra visível
+    if (hasSearched) {
       setHasSearched(false);
       setAccumulatedProfessionals([]);
       setSearchQuery("");
       setSearchResults([]);
-      setOrbitKey(prev => prev + 1); // Forçar re-render completo
-    } else {
-      // Open search
-      setSearchExpanded(true);
+      setOrbitKey(prev => prev + 1);
     }
   };
 
   const handleSearch = (query: string) => {
+    if (!isAdmin && !isAuthenticated && query.trim()) {
+      const freeSearchUsed = localStorage.getItem('free_search_used');
+      const currentMonth = new Date().getMonth() + '-' + new Date().getFullYear();
+      if (freeSearchUsed === currentMonth) {
+        setShowLimitModal(true);
+        return;
+      }
+      localStorage.setItem('free_search_used', currentMonth);
+    }
     setSearchQuery(query);
   };
 
@@ -322,7 +294,6 @@ const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onS
           const response = await fetch(`/api/professionals/search?q=${encodeURIComponent(debouncedQuery)}`);
           if (response.ok) {
             const apiResults = await response.json();
-            console.log(`🔍 BUSCA API: "${debouncedQuery}" retornou ${apiResults.length} profissionais`);
             setSearchResults(apiResults.slice(0, 6)); // Máximo 6 profissionais
           } else {
             console.error('Erro na busca API:', response.status);
@@ -442,7 +413,6 @@ const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onS
             <SimpleOrb
               professional={professional}
               onClick={() => {
-                console.log('CLICOU EM:', professional.name);
                 onOpenProfessional(professional.id);
               }}
             />
@@ -474,7 +444,6 @@ const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onS
             <SimpleOrb
               professional={professional}
               onClick={() => {
-                console.log('CLICOU EM:', professional.name);
                 onOpenProfessional(professional.id);
               }}
             />
@@ -506,7 +475,6 @@ const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onS
             <SimpleOrb
               professional={professional}
               onClick={() => {
-                console.log('CLICOU EM:', professional.name);
                 onOpenProfessional(professional.id);
               }}
             />
@@ -521,20 +489,18 @@ const OrbitSystem = memo(({ onOpenProfessional, onOpenLogin, autoOpenSearch, onS
           
           {/* Search Bar - Below brain */}
           <div className="mt-8 relative z-50">
-            <SearchBar 
+            <SearchBar
               isExpanded={searchExpanded}
               onSearch={handleSearch}
               onClose={() => {
-                setSearchExpanded(false);
                 setSearchQuery("");
                 setSearchResults([]);
-                // Reset to initial 10 best when closing search
                 setHasSearched(false);
                 setAccumulatedProfessionals([]);
+                setOrbitKey(prev => prev + 1);
               }}
               onConfirm={() => {
                 confirmSearchResults();
-                setSearchExpanded(false);
               }}
             />
           </div>

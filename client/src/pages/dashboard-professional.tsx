@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/useAuth";
+﻿import { useAuth } from "@/hooks/useAuth";
 import { isAdminUser } from '@/lib/isAdmin';
 import { ProfessionalDashboard } from "@/components/dashboard/professional-dashboard";
 
@@ -7,7 +7,7 @@ export default function ProfessionalDashboardPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#020914', position: 'relative', zIndex: 1 }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000915', position: 'relative', zIndex: 1 }}>
         <div className="animate-spin w-8 h-8 border-4 border-cyan-400 border-t-transparent rounded-full" />
       </div>
     );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -345,7 +345,7 @@ export default function Cadastro() {
   };
 
   return (
-    <div className="min-h-screen text-white p-3 sm:p-6" style={{ background: '#020914' }}>
+    <div className="min-h-screen text-white p-3 sm:p-6" style={{ background: '#000915' }}>
       <div className="max-w-3xl mx-auto scale-[0.83]">
         {/* Header com botão voltar */}
         <div className="flex items-center mb-4 sm:mb-8">
@@ -601,7 +601,7 @@ export default function Cadastro() {
                         <SelectTrigger className="bg-[#061A2D] border-gray-600 border-2 hover:border-cyan-400 transition-all">
                           <SelectValue placeholder="🎯 Selecione sua área principal" />
                         </SelectTrigger>
-                        <SelectContent className="bg-[#020914]/95 border-gray-600 backdrop-blur-sm">
+                        <SelectContent className="bg-[#000915]/95 border-gray-600 backdrop-blur-sm">
                           {Object.entries(categorySpecialties).map(([key, category]) => (
                             <SelectItem 
                               key={key} 
@@ -622,7 +622,7 @@ export default function Cadastro() {
                           <SelectTrigger className="bg-[#061A2D] border-gray-600 border-2 hover:border-cyan-400 transition-all">
                             <SelectValue placeholder="⭐ Escolha sua especialidade" />
                           </SelectTrigger>
-                          <SelectContent className="bg-[#020914]/95 border-gray-600 backdrop-blur-sm max-h-60">
+                          <SelectContent className="bg-[#000915]/95 border-gray-600 backdrop-blur-sm max-h-60">
                             {categorySpecialties[selectedCategory as keyof typeof categorySpecialties]?.specialties.map((specialty) => (
                               <SelectItem 
                                 key={specialty} 

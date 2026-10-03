@@ -107,7 +107,6 @@ export default function TrackingMap({
     wsRef.current = new WebSocket(wsUrl);
     
     wsRef.current.onopen = () => {
-      console.log('🔗 WebSocket conectado para rastreamento');
       wsRef.current?.send(JSON.stringify({
         type: 'tracking_start',
         serviceId,

@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+﻿import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RotateCcw, Home } from 'lucide-react';
@@ -37,7 +37,7 @@ class ErrorBoundary extends Component<Props, State> {
         timestamp: new Date().toISOString()
       }));
     } catch (storageError) {
-      console.warn('Não foi possível salvar o erro no localStorage:', storageError);
+      // localStorage save failed
     }
   }
 
@@ -58,7 +58,7 @@ class ErrorBoundary extends Component<Props, State> {
 
       // Interface de erro padrão otimizada para mobile
       return (
-        <div className="min-h-screen bg-[#020914] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[#000915] flex items-center justify-center p-4">
           <Card className="glassmorphism border-red-500/30 max-w-md w-full">
             <CardHeader className="text-center pb-4">
               <div className="mx-auto w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-4">

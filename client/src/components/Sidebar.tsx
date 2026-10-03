@@ -1,4 +1,4 @@
-import { useLocation } from 'wouter';
+﻿import { useLocation } from 'wouter';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { isAdminUser } from '@/lib/isAdmin';
@@ -8,7 +8,7 @@ import { isAdminUser } from '@/lib/isAdmin';
 // intacto (sem regressão). Só navegação (as buscas inline vivem na home).
 
 const C = {
-  cyan: '#00E5FF', blue: '#00AEEF', ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
+  cyan: '#00BFFF', blue: '#00AEEF', ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)', bg2: '#061A2D',
 };
 

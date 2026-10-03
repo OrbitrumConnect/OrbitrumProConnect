@@ -40,7 +40,6 @@ export function SimpleOrb({ professional, onClick }: SimpleOrbProps) {
       onClick={(e) => {
         if (!isDragging) {
           e.stopPropagation();
-          console.log('CLIQUE NO ORB:', professional.name);
           onClick();
         }
       }}

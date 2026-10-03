@@ -106,8 +106,6 @@ export default function IAMatchingSearch() {
     try {
       setIsSearching(true);
       
-      console.log('🤖 Iniciando busca com IA:', criteria);
-      
       const response = await fetch('/api/professionals/ai-search', {
         method: 'POST',
         headers: {
@@ -132,7 +130,6 @@ export default function IAMatchingSearch() {
           variant: "default",
         });
         
-        console.log('🎯 IA Matches:', data.professionals);
       } else {
         throw new Error(data.message || "Erro na busca");
       }

@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+﻿import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Shield, CheckCircle, XCircle } from "lucide-react";
 
@@ -19,7 +19,7 @@ export function DocumentVerificationModal({
 }: DocumentVerificationModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md glassmorphism border-red-500/30 bg-[#020914]/95">
+      <DialogContent className="max-w-md glassmorphism border-red-500/30 bg-[#000915]/95">
         <DialogHeader>
           <DialogTitle className="text-red-400 flex items-center gap-2">
             <Shield className="h-5 w-5" />

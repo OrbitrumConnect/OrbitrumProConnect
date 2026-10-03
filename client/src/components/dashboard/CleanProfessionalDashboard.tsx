@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +17,8 @@ import {
   Star,
   Image,
   Rocket,
+  Network,
+  Search,
 } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
@@ -28,10 +30,12 @@ import Sidebar from "@/components/Sidebar";
 import NetworkAside from "@/components/NetworkAside";
 import BoostPerfil from "@/components/BoostPerfil";
 import EquipesTab from "@/components/EquipesTab";
+import OpportunitiesTab from "@/components/dashboard/OpportunitiesTab";
+import { supabase } from "@/lib/supabase";
 
 const C = {
-  bg: '#020914', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };
@@ -40,17 +44,17 @@ interface ProfessionalDashboardProps {
   user: any;
 }
 
-type TabId = 'overview' | 'requests' | 'portfolio' | 'profile' | 'documents' | 'calendar' | 'team' | 'equipes' | 'boost';
+type TabId = 'overview' | 'requests' | 'opportunities' | 'portfolio' | 'profile' | 'documents' | 'calendar' | 'equipes' | 'boost';
 
 const TABS: Array<{ id: TabId; icon: typeof Home; label: string }> = [
   { id: 'overview', icon: Home, label: 'Visão Geral' },
   { id: 'requests', icon: MessageCircle, label: 'Solicitações' },
+  { id: 'opportunities', icon: Search, label: 'Oportunidades' },
   { id: 'portfolio', icon: Camera, label: 'Portfólio' },
   { id: 'profile', icon: User, label: 'Perfil' },
   { id: 'documents', icon: FileText, label: 'Documentos' },
   { id: 'calendar', icon: Calendar, label: 'Agenda' },
-  { id: 'team', icon: Users, label: 'Meu Time' },
-  { id: 'equipes', icon: Users, label: 'Equipes' },
+  { id: 'equipes', icon: Users, label: 'Meu Time' },
   { id: 'boost', icon: Rocket, label: 'Impulsionar' },
 ];
 
@@ -84,6 +88,18 @@ export function CleanProfessionalDashboard({ user }: ProfessionalDashboardProps)
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: factsCount } = useQuery({
+    queryKey: ['pro-facts-count', user.id],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from('relational_facts')
+        .select('id', { count: 'exact', head: true })
+        .or(`subject_id.eq.${user.id},object_id.eq.${user.id}`);
+      return count || 0;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const pendingCount = (pendingRequests as any[])?.length || 0;
   const acceptedCount = (acceptedServices as any[])?.length || 0;
   const experiencias = (stats as any)?.completedServices || acceptedCount;
@@ -109,34 +125,39 @@ export function CleanProfessionalDashboard({ user }: ProfessionalDashboardProps)
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: 24, padding: mobile ? 0 : '0 24px' }}>
         <div style={{ flex: 1, maxWidth: 760, width: '100%', padding: mobile ? '16px 12px 80px' : '24px 0' }}>
           {/* Stats rápidos */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12, marginBottom: 20 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12, marginBottom: 20 }}>
             <StatCard icon={<MessageCircle size={16} color="#FF7A7A" />} label="Pendentes" value={pendingCount} border="#FF7A7A" />
             <StatCard icon={<CheckCircle size={16} color="#5BF5A0" />} label="Aceitos" value={acceptedCount} border="#5BF5A0" />
             <StatCard icon={<Shield size={16} color={C.cyan} />} label="Experiências" value={experiencias} border={C.cyan} />
+            <StatCard icon={<Network size={16} color="#FFD166" />} label="Fatos na rede" value={factsCount || 0} border="#FFD166" />
           </div>
 
           {/* Tabs */}
-          <div style={{ display: 'flex', gap: 2, borderBottom: `1px solid ${C.border}`, marginBottom: 20, overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' } as any}>
-            {TABS.map(tab => (
-              <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 5, padding: '10px 12px', fontSize: 12, fontWeight: activeTab === tab.id ? 600 : 400,
-                  color: activeTab === tab.id ? C.cyan : C.ink2, background: 'none', border: 'none', cursor: 'pointer',
-                  borderBottom: activeTab === tab.id ? `2px solid ${C.cyan}` : '2px solid transparent', whiteSpace: 'nowrap',
-                }}>
-                <tab.icon size={15} />
-                {tab.label}
-                {tab.id === 'requests' && pendingCount > 0 && (
-                  <span style={{ background: '#FF4444', color: '#fff', borderRadius: 10, padding: '1px 7px', fontSize: 10, fontWeight: 700 }}>{pendingCount}</span>
-                )}
-              </button>
-            ))}
+          <div style={{ position: 'relative', marginBottom: 20 }}>
+            <div style={{ display: 'flex', gap: 2, borderBottom: `1px solid ${C.border}`, overflowX: 'auto', scrollbarWidth: 'thin', scrollbarColor: `${C.cyan}44 transparent`, paddingBottom: 1 } as any}>
+              {TABS.map(tab => (
+                <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 5, padding: '10px 12px', fontSize: 12, fontWeight: activeTab === tab.id ? 600 : 400,
+                    color: activeTab === tab.id ? C.cyan : C.ink2, background: 'none', border: 'none', cursor: 'pointer',
+                    borderBottom: activeTab === tab.id ? `2px solid ${C.cyan}` : '2px solid transparent', whiteSpace: 'nowrap', flexShrink: 0,
+                  }}>
+                  <tab.icon size={15} />
+                  {tab.label}
+                  {tab.id === 'requests' && pendingCount > 0 && (
+                    <span style={{ background: '#FF4444', color: '#fff', borderRadius: 10, padding: '1px 7px', fontSize: 10, fontWeight: 700 }}>{pendingCount}</span>
+                  )}
+                </button>
+              ))}
+            </div>
+            <div style={{ position: 'absolute', right: 0, top: 0, bottom: 1, width: 40, background: `linear-gradient(to right, transparent, ${C.bg})`, pointerEvents: 'none' }} />
           </div>
 
           {/* Tab content */}
           <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}>
             {activeTab === 'overview' && <OverviewTab atividades={atividades} pendingCount={pendingCount} acceptedCount={acceptedCount} />}
             {activeTab === 'requests' && <RequestsTab pendingCount={pendingCount} acceptedCount={acceptedCount} />}
+            {activeTab === 'opportunities' && <OpportunitiesTab user={user} />}
             {activeTab === 'portfolio' && <PortfolioTab user={user} />}
             {activeTab === 'profile' && <ProfileEditor userType="professional" />}
             {activeTab === 'documents' && (
@@ -145,7 +166,6 @@ export function CleanProfessionalDashboard({ user }: ProfessionalDashboardProps)
               </div>
             )}
             {activeTab === 'calendar' && <InteractiveCalendar userType="professional" userId={user?.id || 1} />}
-            {activeTab === 'team' && <TeamTab />}
             {activeTab === 'equipes' && <EquipesTab />}
             {activeTab === 'boost' && <BoostPerfil profId={user?.id || 1} />}
           </motion.div>
@@ -346,50 +366,6 @@ function PortfolioTab({ user }: { user: any }) {
         </div>
         <div style={{ color: C.ink3, fontSize: 13, lineHeight: 1.6 }}>
           Conforme você conclui serviços e os clientes confirmam, as experiências aparecem aqui vinculadas às fotos do trabalho. Cada validação bilateral vira um fato na rede — evidência real, não estrelas.
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TeamTab() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 20 }}>
-        <div style={{ fontWeight: 600, fontSize: 16, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-          <Users size={18} color={C.cyan} /> Meu Time
-        </div>
-        <div style={{ color: C.ink2, fontSize: 13, lineHeight: 1.6, marginBottom: 16 }}>
-          Monte seu time de profissionais. Quando receber um serviço que precisa de mais gente, indique do seu time. A rede registra a colaboração.
-        </div>
-        <Link href="/teams">
-          <button style={{ border: 'none', borderRadius: 10, padding: '9px 20px', background: `linear-gradient(135deg, ${C.cyan}, ${C.blue})`, color: '#012', fontWeight: 600, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <Users size={14} /> Gerenciar equipes
-          </button>
-        </Link>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16, textAlign: 'center' }}>
-          <Users size={20} color={C.cyan} style={{ margin: '0 auto 8px' }} />
-          <div style={{ fontSize: 12, color: C.ink2 }}>Membros</div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: C.ink }}>—</div>
-        </div>
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16, textAlign: 'center' }}>
-          <CheckCircle size={20} color="#5BF5A0" style={{ margin: '0 auto 8px' }} />
-          <div style={{ fontSize: 12, color: C.ink2 }}>Serviços juntos</div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: C.ink }}>—</div>
-        </div>
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16, textAlign: 'center' }}>
-          <Star size={20} color={C.cyan} style={{ margin: '0 auto 8px' }} />
-          <div style={{ fontSize: 12, color: C.ink2 }}>Indicações no time</div>
-          <div style={{ fontSize: 18, fontWeight: 700, color: C.ink }}>—</div>
-        </div>
-      </div>
-
-      <div style={{ background: `${C.blue}0a`, border: `1px solid ${C.border}`, borderRadius: 14, padding: 16 }}>
-        <div style={{ fontSize: 13, color: C.ink2, lineHeight: 1.6 }}>
-          <strong style={{ color: C.cyan }}>Como funciona:</strong> Adicione profissionais da rede ao seu time. Quando um cliente precisar de algo fora da sua especialidade, indique alguém do time — a rede registra a indicação e fortalece a confiança dos dois.
         </div>
       </div>
     </div>

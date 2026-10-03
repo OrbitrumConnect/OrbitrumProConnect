@@ -40,8 +40,6 @@ export default function GPSMinimap({ userType, isTracking, hasActiveService = fa
     const loadLeaflet = async () => {
       try {
         if (!window.L) {
-          console.log('🗺️ Carregando bibliotecas Leaflet...');
-          
           // Carregar CSS do Leaflet
           const cssLink = document.createElement('link');
           cssLink.rel = 'stylesheet';
@@ -52,7 +50,6 @@ export default function GPSMinimap({ userType, isTracking, hasActiveService = fa
           const script = document.createElement('script');
           script.src = '/attached_assets/leaflet_1753186547417.js';
           script.onload = () => {
-            console.log('✅ Leaflet carregado com sucesso!');
             setLeafletLoaded(true);
           };
           script.onerror = () => {
@@ -83,8 +80,6 @@ export default function GPSMinimap({ userType, isTracking, hasActiveService = fa
     if (!window.L || !mapContainerRef.current) return;
 
     try {
-      console.log('🗺️ Inicializando minimap GPS...');
-      
       // Criar mapa centrado no Brasil - aguarda localização real
       leafletMapRef.current = window.L.map(mapContainerRef.current, {
         center: [-15.7942, -47.8822], // Centro do Brasil
@@ -105,7 +100,6 @@ export default function GPSMinimap({ userType, isTracking, hasActiveService = fa
       
       // Só obter localização quando há serviço ativo E tracking ativo
       if (isTracking && hasActiveService && navigator.geolocation) {
-        console.log(`🚀 Iniciando rastreamento GPS para serviço ${serviceId}`);
         getCurrentLocation();
         
         // Atualizar localização a cada 30 segundos durante serviço ativo
@@ -141,7 +135,6 @@ export default function GPSMinimap({ userType, isTracking, hasActiveService = fa
             accuracy: position.coords.accuracy
           };
           
-          console.log('📍 Localização GPS obtida:', locationData);
           setCurrentLocation(locationData);
           updateUserMarker(locationData);
           

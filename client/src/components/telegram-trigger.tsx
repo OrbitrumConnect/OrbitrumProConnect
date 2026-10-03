@@ -9,70 +9,53 @@ export function TelegramTrigger({ isSearchActive = false }: TelegramTriggerProps
   const handleTelegramClick = (event: React.MouseEvent | React.TouchEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    
-    console.log('TelegramTrigger clicado');
-    
+
     // Se estamos no Telegram Mini App, dar feedback visual
     if (typeof window !== 'undefined' && (window as any).Telegram?.WebApp) {
-      console.log('Detectado Telegram WebApp - dando feedback tátil');
-      
       // Feedback tátil se disponível
       const webApp = (window as any).Telegram.WebApp;
       if (webApp.HapticFeedback && typeof webApp.HapticFeedback.impactOccurred === 'function') {
         try {
           webApp.HapticFeedback.impactOccurred('medium');
         } catch (e) {
-          console.log('Erro ao dar feedback tátil:', e);
+          // haptic feedback not available
         }
       }
-      
-      console.log('Você já está no Telegram! Acesse @orbitrumconnect_bot diretamente');
+
       return;
     }
-    
-    // Estratégia melhorada para desktop
-    console.log('Abrindo Telegram Bot - detectando ambiente');
-    
+
     // Detectar se é mobile ou desktop
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+
     if (isMobile) {
-      console.log('Mobile detectado - usando deep link + fallback');
-      
       // Para mobile, tentar deep link primeiro
       try {
         window.location.href = 'tg://resolve?domain=orbitrumconnect_bot';
-        
+
         // Fallback após 1 segundo se deep link não funcionar
         setTimeout(() => {
-          console.log('Fallback para web mobile');
           window.open('https://t.me/orbitrumconnect_bot', '_blank', 'noopener,noreferrer');
         }, 1000);
       } catch (error) {
-        console.log('Erro mobile, abrindo web');
         window.open('https://t.me/orbitrumconnect_bot', '_blank', 'noopener,noreferrer');
       }
     } else {
-      console.log('Desktop detectado - abrindo Telegram diretamente');
-      
       // Para desktop, múltiplas tentativas
       try {
         // Tentar abrir app Telegram desktop primeiro
         const telegramDesktop = window.open('tg://resolve?domain=orbitrumconnect_bot', '_self');
-        
+
         // Se não conseguir, abrir web em nova aba
         setTimeout(() => {
           const webWindow = window.open('https://t.me/orbitrumconnect_bot', '_blank', 'noopener,noreferrer');
-          console.log('Telegram web aberto:', webWindow ? 'sucesso' : 'falhou');
-          
+
           // Se tudo falhar, redirecionar página atual
           if (!webWindow) {
-            console.log('Redirecionando página atual');
             window.location.href = 'https://t.me/orbitrumconnect_bot';
           }
         }, 500);
       } catch (error) {
-        console.log('Erro desktop, tentando fallback:', error);
         window.open('https://t.me/orbitrumconnect_bot', '_blank', 'noopener,noreferrer');
       }
     }

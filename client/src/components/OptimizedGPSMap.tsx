@@ -210,7 +210,7 @@ const OptimizedGPSMap: React.FC<OptimizedGPSMapProps> = ({
             setCurrentLocation(location);
             onLocationUpdate?.(location);
           },
-          (error) => console.log('Watch position error:', error),
+          () => {},
           {
             enableHighAccuracy: isMobile,
             maximumAge: 30000,

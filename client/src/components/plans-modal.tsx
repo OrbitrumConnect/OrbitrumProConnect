@@ -391,16 +391,10 @@ export function PlansModal({ isOpen, onClose, onOpenLogin }: PlansModalProps) {
                       className={`w-full ${plan.popular ? 'neon-button' : 'bg-white bg-opacity-10 hover:bg-opacity-20'}`}
                       size="sm"
                       onClick={() => {
-                        console.log('🔍 CLICK PLAN - User Plan:', user?.plan, 'Button Plan:', plan.id, 'Are Equal:', user?.plan === plan.id);
-                        
                         if (!isAuthenticated) {
-                          // Usuário não logado - direcionar para login
-                          console.log('🔐 Usuário não logado - direcionando para login');
                           onClose();
                           onOpenLogin?.();
                         } else if (user?.plan === plan.id) {
-                          // Usuário já tem esse plano
-                          console.log('✅ Usuário já possui este plano:', plan.id);
                           toast({
                             title: "Plano Atual",
                             description: `Você já possui o plano ${plan.name}.`,
@@ -416,7 +410,6 @@ export function PlansModal({ isOpen, onClose, onOpenLogin }: PlansModalProps) {
                             return;
                           }
                           
-                          console.log('✅ Usuário pode comprar - direcionando para pagamento:', plan.id);
                           onClose();
                           window.location.href = `/pagamento?plano=${plan.id}`;
                         }

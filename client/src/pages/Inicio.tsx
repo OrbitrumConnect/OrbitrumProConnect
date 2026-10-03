@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
 import { useAuth } from '@/hooks/useAuth';
 import { isAdminUser } from '@/lib/isAdmin';
 import { OrbitSystem } from '@/components/orbit-system';
+import { ReasonChip } from '@/components/ui/reason-chip';
 import { ProfessionalModal } from '@/components/professional-modal';
 import ConversaModal from '@/components/ConversaModal';
 import { StarfieldBackground } from '@/components/starfield-background';
@@ -14,8 +15,8 @@ import OpportunityPost from '@/components/OpportunityPost';
 // Consome /api/orbitmatch/search (dado real). Aditiva: rota /inicio, não toca na home antiga.
 
 const C = {
-  bg: '#020914', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
-  cyan: '#00E5FF', blue: '#00AEEF',
+  bg: '#000915', bg2: '#061A2D', card: 'rgba(3,18,32,0.9)',
+  cyan: '#00BFFF', blue: '#00AEEF',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.5)',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
 };
@@ -34,14 +35,7 @@ interface Rec {
   sinalRelacional: number; motivos: string[]; chips: string[]; confianca: string | null;
 }
 
-function Chip({ label }: { label: string }) {
-  return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: C.ink,
-      background: `${C.blue}14`, border: `1px solid ${C.border}`, borderRadius: 11, padding: '2px 8px' }}>
-      <span style={{ color: C.cyan }}>✓</span>{label}
-    </span>
-  );
-}
+const Chip = ReasonChip;
 function Avatar({ src, name }: { src?: string | null; name: string }) {
   if (src) return <img src={src} alt={name} style={{ width: 38, height: 38, borderRadius: '50%', objectFit: 'cover', border: `1px solid ${C.border}` }} />;
   return <div style={{ width: 38, height: 38, borderRadius: '50%', background: `${C.blue}33`, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.cyan, fontWeight: 700 }}>{name?.[0]?.toUpperCase() || '?'}</div>;
@@ -281,14 +275,7 @@ export default function Inicio() {
       {/* CONTEÚDO */}
       <div style={{ flex: 1, minWidth: 0, position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh', paddingBottom: mobile ? 60 : 0 }}>
         {/* header */}
-        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: mobile ? '10px 10px 10px 52px' : '16px 24px', borderBottom: `1px solid ${C.border}`, gap: 10, flexWrap: mobile ? 'nowrap' : 'nowrap' }}>
-          {!mobile && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0, maxWidth: 460 }}>
-              <input value={necessidade} onChange={e => setNecessidade(e.target.value)} onKeyDown={e => e.key === 'Enter' && buscar()}
-                placeholder="O que você precisa resolver?"
-                style={{ flex: 1, background: C.bg2, border: `1px solid ${C.border}`, borderRadius: 22, padding: '10px 18px', color: C.ink, fontSize: 14, outline: 'none', minWidth: 0 }} />
-            </div>
-          )}
+        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: mobile ? '10px 10px 10px 52px' : '16px 24px', borderBottom: `1px solid ${C.border}`, gap: 10, flexWrap: mobile ? 'nowrap' : 'nowrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: mobile ? 8 : 12 }}>
             {user ? (
               <>

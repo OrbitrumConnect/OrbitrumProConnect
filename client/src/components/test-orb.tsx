@@ -27,7 +27,6 @@ export function TestOrb({ professional, onClick }: TestOrbProps) {
       style={{ pointerEvents: 'auto' }}
       onClick={(e) => {
         e.stopPropagation();
-        console.log('CLIQUE DETECTADO NO ORB:', professional.name);
         onClick();
       }}
     >

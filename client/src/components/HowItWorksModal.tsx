@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -104,7 +104,7 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
         oscillator.stop(audioCtx.currentTime + index * 0.2 + duration / 1000);
       });
     } catch (error) {
-      console.log('Som neural não disponível:', error);
+      // audio not available
     }
   };
 
@@ -167,7 +167,7 @@ export function HowItWorksModal({ isOpen, onClose }: HowItWorksModalProps) {
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className={`w-[90vw] max-w-3xl sm:max-w-5xl h-[90vh] sm:max-h-[93vh] overflow-hidden shadow-2xl transition-all duration-800 scale-[1.10] ${
         isClosing ? 'scale-y-0 opacity-0 transform-gpu' : ''
-      }`} style={{ background: '#020914', border: '1px solid rgba(0,174,255,0.25)', paddingTop: 'max(18px, env(safe-area-inset-top, 18px))' }}>
+      }`} style={{ background: '#000915', border: '1px solid rgba(0,174,255,0.25)', paddingTop: 'max(18px, env(safe-area-inset-top, 18px))' }}>
         <button onClick={handleClose} style={{ position: 'absolute', top: 'max(16px, env(safe-area-inset-top, 16px))', right: 16, background: 'rgba(2,9,20,0.7)', border: '1px solid rgba(0,190,255,0.2)', borderRadius: 8, color: '#91A9BD', cursor: 'pointer', zIndex: 10, padding: 6, width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <X size={18} />
         </button>

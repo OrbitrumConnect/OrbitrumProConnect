@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Navigation } from 'lucide-react';
 import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
@@ -56,11 +56,10 @@ export default function ProfessionalTracking() {
       })
     }).catch(console.error);
 
-    console.log(`Serviço ${serviceId} atualizado para: ${status}`, reason ? `Motivo: ${reason}` : '');
   };
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#020914', position: 'relative', zIndex: 1 }}>
+    <div className="min-h-screen flex" style={{ background: '#000915', position: 'relative', zIndex: 1 }}>
       <Sidebar />
       <div className="flex-1 min-w-0">
       {/* Header */}

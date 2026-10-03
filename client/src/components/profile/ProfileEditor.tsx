@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Camera, X, Check, MapPin, Phone, Briefcase } from "lucide-react";
 
 const C = {
-  bg: '#020914', card: 'rgba(3,18,32,0.92)', surface: '#0A1929',
-  cyan: '#00E5FF', blue: '#00AEEF', ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#5b7a90',
+  bg: '#000915', card: 'rgba(3,18,32,0.92)', surface: '#0A1929',
+  cyan: '#00BFFF', blue: '#00AEEF', ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#5b7a90',
   border: 'rgba(0,190,255,0.18)', borderHot: 'rgba(0,190,255,0.4)',
   green: '#24F0C7', orange: '#FF9F43',
 };
@@ -146,7 +146,7 @@ export default function ProfileEditor({ userType }: ProfileEditorProps) {
           </div>
           <button onClick={() => fileInputRef.current?.click()}
             style={{ position: 'absolute', bottom: -4, right: -4, width: 28, height: 28, borderRadius: '50%', background: C.cyan, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Camera size={14} color="#020914" />
+            <Camera size={14} color="#000915" />
           </button>
         </div>
         <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }}

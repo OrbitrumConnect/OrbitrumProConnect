@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 
 const C = {
-  bg: '#020914', card: 'rgba(3,18,32,0.92)', surface: '#0A1929',
-  cyan: '#00E5FF', blue: '#00AEEF', green: '#4ADE80',
+  bg: '#000915', card: 'rgba(3,18,32,0.92)', surface: '#0A1929',
+  cyan: '#00BFFF', blue: '#00AEEF', green: '#4ADE80',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#5b7a90',
   border: 'rgba(0,190,255,0.18)', borderHot: 'rgba(0,190,255,0.4)',
 };

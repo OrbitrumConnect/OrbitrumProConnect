@@ -1,9 +1,9 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 
 const C = {
   bg2: '#061A2D', card: 'rgba(3,18,32,0.92)',
-  cyan: '#00E5FF', blue: '#00AEEF', green: '#4ADE80',
+  cyan: '#00BFFF', blue: '#00AEEF', green: '#4ADE80',
   ink: '#F4FAFF', ink2: '#91A9BD', ink3: '#607A91',
   border: 'rgba(0,174,255,0.18)', borderHot: 'rgba(0,220,255,0.4)',
 };

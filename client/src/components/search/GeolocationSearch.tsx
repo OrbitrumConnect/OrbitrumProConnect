@@ -78,7 +78,6 @@ export default function GeolocationSearch() {
         const data = await response.json();
         location.address = `${data.city}, ${data.principalSubdivision}`;
       } catch (geocodeError) {
-        console.log("Geocoding falhou, continuando sem endereço:", geocodeError);
       }
 
       setSearchLocation(location);
@@ -119,12 +118,6 @@ export default function GeolocationSearch() {
     try {
       setIsSearching(true);
       
-      console.log('📍 Buscando profissionais próximos:', { 
-        latitude: searchLocation.latitude, 
-        longitude: searchLocation.longitude, 
-        radius 
-      });
-      
       const response = await fetch(
         `/api/professionals/nearby?latitude=${searchLocation.latitude}&longitude=${searchLocation.longitude}&radius=${radius}`
       );
@@ -145,7 +138,6 @@ export default function GeolocationSearch() {
           variant: "default",
         });
         
-        console.log('📍 Profissionais encontrados:', data.professionals);
       } else {
         throw new Error(data.message || "Erro na busca geográfica");
       }

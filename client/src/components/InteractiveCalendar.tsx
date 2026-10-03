@@ -211,8 +211,6 @@ const InteractiveCalendar: React.FC<InteractiveCalendarProps> = ({ userType, use
         userType={userType} 
         userId={userId}
         onEventUpdate={(eventId, status) => {
-          console.log(`Evento ${eventId} atualizado para: ${status}`);
-          // Aqui podemos atualizar o calendário local se necessário
         }}
       />
 
